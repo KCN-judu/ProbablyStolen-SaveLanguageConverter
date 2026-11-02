@@ -10,7 +10,7 @@ Part of the [Probably Stolen mods collection](https://github.com/KCN-judu/Probab
 
 ## Install
 
-Subscribe on the Steam Workshop, or copy a release folder into the game's `Mods` folder. Then enable the mod in the game's Mods menu and restart the game.
+Subscribe on the [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3832481427), or copy the folder from a [release](https://github.com/KCN-judu/ProbablyStolen-SaveLanguageConverter/releases) into the game's `Mods` folder. Then enable the mod in the game's Mods menu and restart the game.
 
 ## Build
 
