@@ -21,6 +21,14 @@ Two environment variables override the defaults:
 | `GAME` | `/d/SteamLibrary/steamapps/common/Probably Stolen` |
 | `CSC` | `/c/Windows/Microsoft.NET/Framework64/v4.0.30319/csc.exe` |
 
+## Checks
+
+```bash
+tests/run.sh
+```
+
+It runs the engine's checks headless, and the game's mod scanner on the build when the game is installed.
+
 ## Install by hand
 
 Copy the folder `out/save_language_converter` into the game's `Mods` folder, start the game, and enable the mod in the Mods menu. Mods load when the game starts, so restart after enabling or updating one.

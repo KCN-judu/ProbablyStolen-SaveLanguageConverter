@@ -48,22 +48,30 @@ msgid "Default"
 msgstr ""
 
 #: manual/building.md:24
-msgid "Install by hand"
-msgstr ""
-
-#: manual/building.md:26
-msgid "Copy the folder `out/save_language_converter` into the game's `Mods` folder, start the game, and enable the mod in the Mods menu. Mods load when the game starts, so restart after enabling or updating one."
-msgstr ""
-
-#: manual/building.md:28
-msgid "The mod declares no capabilities, so the game enables it without a permission prompt."
+msgid "Checks"
 msgstr ""
 
 #: manual/building.md:30
-msgid "Regenerating the type list"
+msgid "It runs the engine's checks headless, and the game's mod scanner on the build when the game is installed."
 msgstr ""
 
 #: manual/building.md:32
+msgid "Install by hand"
+msgstr ""
+
+#: manual/building.md:34
+msgid "Copy the folder `out/save_language_converter` into the game's `Mods` folder, start the game, and enable the mod in the Mods menu. Mods load when the game starts, so restart after enabling or updating one."
+msgstr ""
+
+#: manual/building.md:36
+msgid "The mod declares no capabilities, so the game enables it without a permission prompt."
+msgstr ""
+
+#: manual/building.md:38
+msgid "Regenerating the type list"
+msgstr ""
+
+#: manual/building.md:40
 msgid "`src/KnownTypes.g.cs` lists the save classes the walker visits. Regenerate it with `tools/Closure.cs` after a game update that changes save classes."
 msgstr ""
 
@@ -108,7 +116,7 @@ msgid "When several entries share a source string, the entry whose key shares wo
 msgstr ""
 
 #: manual/how-it-works.md:17
-msgid "The matcher lives in `src/Translator.cs`."
+msgid "The matcher lives in `src/Translator.Pure.cs`."
 msgstr ""
 
 #: manual/how-it-works.md:19
@@ -128,18 +136,26 @@ msgid "Tests"
 msgstr ""
 
 #: manual/how-it-works.md:27
-msgid "`tests/EngineTest.cs` runs the engine outside the game, on string tables exported from the game's bundles and on a real save. For the Chinese save it was developed with:"
+msgid "The engine is kept apart from the game and Unity in `src/*.Pure.cs`, which use nothing but plain C#: the matcher in `Translator.Pure.cs` and the save rewriter in `JsonText.Pure.cs`. The code that talks to the game only reads the string tables and the loaded save and passes them on."
 msgstr ""
 
 #: manual/how-it-works.md:29
+msgid "`tests/run.sh` runs `tests/PureTest.cs`, which checks the engine on hand-made table entries without the game, Unity or a save: exact entries, templates and their arguments, choosing between entries that share a source string, untranslated text, and rewriting JSON in place. With the game installed it also runs the mod scanner."
+msgstr ""
+
+#: manual/how-it-works.md:31
+msgid "`tests/EngineTest.cs` runs the engine outside the game, on string tables exported from the game's bundles and on a real save. For the Chinese save it was developed with:"
+msgstr ""
+
+#: manual/how-it-works.md:33
 msgid "Chinese to English: 492 of 492 distinct texts match a hand-checked conversion, and 60,719 of 60,721 strings in the whole save are identical. The 2 differences are intentional: sprite bookkeeping is left alone, and `startLocale` is set by the mod."
 msgstr ""
 
-#: manual/how-it-works.md:30
+#: manual/how-it-works.md:34
 msgid "English to Chinese: no Chinese text is lost. The differences are one-to-many cases, where one English line has several Chinese ones, and English names the game also keeps in Chinese saves."
 msgstr ""
 
-#: manual/how-it-works.md:32
+#: manual/how-it-works.md:36
 msgid "`tests/ScanTest.cs` runs the game's own mod scanner on the built DLL. The result is no capabilities and not refused."
 msgstr ""
 

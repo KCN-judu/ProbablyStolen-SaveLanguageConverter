@@ -48,22 +48,30 @@ msgid "Default"
 msgstr "默认值"
 
 #: manual/building.md:24
+msgid "Checks"
+msgstr "检查"
+
+#: manual/building.md:30
+msgid "It runs the engine's checks headless, and the game's mod scanner on the build when the game is installed."
+msgstr "它在无界面的环境中运行引擎的检查；如果装了游戏，还会对构建结果运行游戏自带的模组扫描器。"
+
+#: manual/building.md:32
 msgid "Install by hand"
 msgstr "手动安装"
 
-#: manual/building.md:26
+#: manual/building.md:34
 msgid "Copy the folder `out/save_language_converter` into the game's `Mods` folder, start the game, and enable the mod in the Mods menu. Mods load when the game starts, so restart after enabling or updating one."
 msgstr "把 `out/save_language_converter` 文件夹复制到游戏的 `Mods` 文件夹，启动游戏，在模组菜单中启用它。模组在游戏启动时加载，所以启用或更新后要重启游戏。"
 
-#: manual/building.md:28
+#: manual/building.md:36
 msgid "The mod declares no capabilities, so the game enables it without a permission prompt."
 msgstr "这个模组不声明任何权限，游戏启用它时不会弹出权限确认。"
 
-#: manual/building.md:30
+#: manual/building.md:38
 msgid "Regenerating the type list"
 msgstr "重新生成类型列表"
 
-#: manual/building.md:32
+#: manual/building.md:40
 msgid "`src/KnownTypes.g.cs` lists the save classes the walker visits. Regenerate it with `tools/Closure.cs` after a game update that changes save classes."
 msgstr "`src/KnownTypes.g.cs` 列出遍历器会访问的存档类。游戏更新改变了存档类时，用 `tools/Closure.cs` 重新生成它。"
 
@@ -108,8 +116,8 @@ msgid "When several entries share a source string, the entry whose key shares wo
 msgstr "当多个条目的源字符串相同时，键名与文字附近 id 有共同词的条目优先。例如在 `category: plant_taste` 旁边，`plant_trait_unappetizing_name` 胜出。其次是更核心的字符串表优先，最后是最常见的译法优先。"
 
 #: manual/how-it-works.md:17
-msgid "The matcher lives in `src/Translator.cs`."
-msgstr "匹配器位于 `src/Translator.cs`。"
+msgid "The matcher lives in `src/Translator.Pure.cs`."
+msgstr "匹配器位于 `src/Translator.Pure.cs`。"
 
 #: manual/how-it-works.md:19
 msgid "Choosing what to convert"
@@ -128,18 +136,26 @@ msgid "Tests"
 msgstr "测试"
 
 #: manual/how-it-works.md:27
+msgid "The engine is kept apart from the game and Unity in `src/*.Pure.cs`, which use nothing but plain C#: the matcher in `Translator.Pure.cs` and the save rewriter in `JsonText.Pure.cs`. The code that talks to the game only reads the string tables and the loaded save and passes them on."
+msgstr "引擎与游戏和 Unity 分开，放在 `src/*.Pure.cs` 中，只使用纯 C#：匹配器在 `Translator.Pure.cs`，存档改写器在 `JsonText.Pure.cs`。与游戏交互的代码只负责读取字符串表和已载入的存档，再交给引擎处理。"
+
+#: manual/how-it-works.md:29
+msgid "`tests/run.sh` runs `tests/PureTest.cs`, which checks the engine on hand-made table entries without the game, Unity or a save: exact entries, templates and their arguments, choosing between entries that share a source string, untranslated text, and rewriting JSON in place. With the game installed it also runs the mod scanner."
+msgstr "`tests/run.sh` 运行 `tests/PureTest.cs`，用手工编写的表项检验引擎，不需要游戏、Unity 或存档：精确条目、模板及其参数、在共用同一原文的条目之间选择、未翻译的文字，以及原地改写 JSON。装了游戏时，它还会运行模组扫描器。"
+
+#: manual/how-it-works.md:31
 msgid "`tests/EngineTest.cs` runs the engine outside the game, on string tables exported from the game's bundles and on a real save. For the Chinese save it was developed with:"
 msgstr "`tests/EngineTest.cs` 在游戏之外运行转换引擎，使用从游戏资源包导出的字符串表和一个真实存档。对开发时使用的中文存档："
 
-#: manual/how-it-works.md:29
+#: manual/how-it-works.md:33
 msgid "Chinese to English: 492 of 492 distinct texts match a hand-checked conversion, and 60,719 of 60,721 strings in the whole save are identical. The 2 differences are intentional: sprite bookkeeping is left alone, and `startLocale` is set by the mod."
 msgstr "中文转英文：492 条不同文字全部与人工核对的结果一致，整个存档 60,721 个字符串中有 60,719 个完全相同。剩下 2 处差异是有意为之：贴图记录保持不动，`startLocale` 由模组设置。"
 
-#: manual/how-it-works.md:30
+#: manual/how-it-works.md:34
 msgid "English to Chinese: no Chinese text is lost. The differences are one-to-many cases, where one English line has several Chinese ones, and English names the game also keeps in Chinese saves."
 msgstr "英文转中文：没有丢失任何中文。差异都是一对多的情况（一句英文对应多句中文），以及游戏在中文存档里也保留的英文名称。"
 
-#: manual/how-it-works.md:32
+#: manual/how-it-works.md:36
 msgid "`tests/ScanTest.cs` runs the game's own mod scanner on the built DLL. The result is no capabilities and not refused."
 msgstr "`tests/ScanTest.cs` 用游戏自己的模组扫描器检查构建好的 DLL，结果是不需要任何权限，也没有被拒绝。"
 
