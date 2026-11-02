@@ -1,0 +1,17 @@
+# Save Language Converter - Русский (ru)
+button_convert,Конвертировать копию
+dialog_hint,Конвертировать копию: дублирует это сохранение и переводит его тексты на {0}. Оригинал остаётся без изменений.
+copy_name,{0} ({1})
+copy_failed,Не удалось скопировать сохранение. Ничего не изменено.
+lang_en,English
+lang_zh,简体中文
+lang_ja,日本語
+lang_ko,한국어
+lang_de,Deutsch
+lang_fr,Français
+lang_es,Español
+lang_it,Italiano
+lang_pl,Polski
+lang_ru,Русский
+lang_ptbr,Português (Brasil)
+lang_ptBR,Português (Brasil)

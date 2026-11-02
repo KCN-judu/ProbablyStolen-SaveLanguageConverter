@@ -3,7 +3,7 @@
   <ID>save_language_converter</ID>
   <Name>Save Language Converter</Name>
   <Author>KCN-judu</Author>
-  <ModVersion>1.0.0</ModVersion>
+  <ModVersion>1.1.0</ModVersion>
   <Description>Loading a save that was started in another language? The warning gets a "Convert a copy" button. The save is duplicated, and the copy's item names, descriptions, customers, news and logs are switched to your current language using the game's own translations. The original save is never touched.</Description>
   <GameVersions>
     <Version>0.46D</Version>

@@ -1,0 +1,17 @@
+# Save Language Converter - Deutsch (de)
+button_convert,Kopie umwandeln
+dialog_hint,Kopie umwandeln: dupliziert diesen Spielstand und stellt seine Texte auf {0} um. Das Original bleibt unverändert.
+copy_name,{0} ({1})
+copy_failed,Der Spielstand konnte nicht kopiert werden. Es wurde nichts geändert.
+lang_en,English
+lang_zh,简体中文
+lang_ja,日本語
+lang_ko,한국어
+lang_de,Deutsch
+lang_fr,Français
+lang_es,Español
+lang_it,Italiano
+lang_pl,Polski
+lang_ru,Русский
+lang_ptbr,Português (Brasil)
+lang_ptBR,Português (Brasil)

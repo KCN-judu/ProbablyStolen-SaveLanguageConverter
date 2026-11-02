@@ -1,0 +1,17 @@
+# Save Language Converter - Italiano (it)
+button_convert,Converti una copia
+dialog_hint,Converti una copia: duplica questo salvataggio e ne porta i testi in {0}. L’originale resta com’è.
+copy_name,{0} ({1})
+copy_failed,Impossibile copiare il salvataggio. Non è stato modificato nulla.
+lang_en,English
+lang_zh,简体中文
+lang_ja,日本語
+lang_ko,한국어
+lang_de,Deutsch
+lang_fr,Français
+lang_es,Español
+lang_it,Italiano
+lang_pl,Polski
+lang_ru,Русский
+lang_ptbr,Português (Brasil)
+lang_ptBR,Português (Brasil)

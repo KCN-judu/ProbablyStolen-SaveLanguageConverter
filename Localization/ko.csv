@@ -1,0 +1,17 @@
+# Save Language Converter - 한국어 (ko)
+button_convert,사본 변환
+dialog_hint,사본 변환: 이 저장 파일을 복제하고 텍스트를 {0}(으)로 바꿉니다. 원본은 그대로 남습니다.
+copy_name,{0} ({1})
+copy_failed,저장 파일을 복사할 수 없습니다. 아무것도 변경되지 않았습니다.
+lang_en,English
+lang_zh,简体中文
+lang_ja,日本語
+lang_ko,한국어
+lang_de,Deutsch
+lang_fr,Français
+lang_es,Español
+lang_it,Italiano
+lang_pl,Polski
+lang_ru,Русский
+lang_ptbr,Português (Brasil)
+lang_ptBR,Português (Brasil)

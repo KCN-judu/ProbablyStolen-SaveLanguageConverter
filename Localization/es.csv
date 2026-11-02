@@ -1,0 +1,17 @@
+# Save Language Converter - Español (es)
+button_convert,Convertir una copia
+dialog_hint,Convertir una copia: duplica esta partida y cambia sus textos a {0}. La original no se modifica.
+copy_name,{0} ({1})
+copy_failed,No se pudo copiar la partida. No se ha cambiado nada.
+lang_en,English
+lang_zh,简体中文
+lang_ja,日本語
+lang_ko,한국어
+lang_de,Deutsch
+lang_fr,Français
+lang_es,Español
+lang_it,Italiano
+lang_pl,Polski
+lang_ru,Русский
+lang_ptbr,Português (Brasil)
+lang_ptBR,Português (Brasil)

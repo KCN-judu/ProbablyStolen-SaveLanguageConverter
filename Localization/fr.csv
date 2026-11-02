@@ -1,0 +1,17 @@
+# Save Language Converter - Français (fr)
+button_convert,Convertir une copie
+dialog_hint,Convertir une copie : duplique cette sauvegarde et passe ses textes en {0}. L’original reste intact.
+copy_name,{0} ({1})
+copy_failed,La sauvegarde n’a pas pu être copiée. Rien n’a été modifié.
+lang_en,English
+lang_zh,简体中文
+lang_ja,日本語
+lang_ko,한국어
+lang_de,Deutsch
+lang_fr,Français
+lang_es,Español
+lang_it,Italiano
+lang_pl,Polski
+lang_ru,Русский
+lang_ptbr,Português (Brasil)
+lang_ptBR,Português (Brasil)

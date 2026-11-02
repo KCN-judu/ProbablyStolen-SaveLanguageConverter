@@ -1,0 +1,17 @@
+# Save Language Converter - Polski (pl)
+button_convert,Przekonwertuj kopię
+dialog_hint,Przekonwertuj kopię: duplikuje ten zapis i zmienia jego teksty na {0}. Oryginał pozostaje bez zmian.
+copy_name,{0} ({1})
+copy_failed,Nie udało się skopiować zapisu. Nic nie zostało zmienione.
+lang_en,English
+lang_zh,简体中文
+lang_ja,日本語
+lang_ko,한국어
+lang_de,Deutsch
+lang_fr,Français
+lang_es,Español
+lang_it,Italiano
+lang_pl,Polski
+lang_ru,Русский
+lang_ptbr,Português (Brasil)
+lang_ptBR,Português (Brasil)

@@ -1,0 +1,17 @@
+# Save Language Converter - Português do Brasil (ptBR)
+button_convert,Converter uma cópia
+dialog_hint,Converter uma cópia: duplica este save e muda os textos dele para {0}. O original continua como está.
+copy_name,{0} ({1})
+copy_failed,Não foi possível copiar o save. Nada foi alterado.
+lang_en,English
+lang_zh,简体中文
+lang_ja,日本語
+lang_ko,한국어
+lang_de,Deutsch
+lang_fr,Français
+lang_es,Español
+lang_it,Italiano
+lang_pl,Polski
+lang_ru,Русский
+lang_ptbr,Português (Brasil)
+lang_ptBR,Português (Brasil)
