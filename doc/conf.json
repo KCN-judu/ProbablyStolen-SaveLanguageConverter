@@ -1,0 +1,12 @@
+{
+  "title": "Save Language Converter",
+  "summary": "Converts a copy of a save started in another language to the language you play in.",
+  "locales": [
+    "zh_CN"
+  ],
+  "order": [
+    "index.md",
+    "how-it-works.md",
+    "building.md"
+  ]
+}

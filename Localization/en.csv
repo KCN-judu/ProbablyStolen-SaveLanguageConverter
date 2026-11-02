@@ -1,0 +1,16 @@
+# Save Language Converter - English (en)
+button_convert,Convert a copy
+dialog_hint,Convert a copy: duplicates this save and switches its text to {0}. The original stays as it is.
+copy_name,{0} ({1})
+copy_failed,The save could not be copied. Nothing was changed.
+lang_en,English
+lang_zh,简体中文
+lang_ja,日本語
+lang_ko,한국어
+lang_de,Deutsch
+lang_fr,Français
+lang_es,Español
+lang_it,Italiano
+lang_pl,Polski
+lang_ru,Русский
+lang_ptbr,Português (Brasil)

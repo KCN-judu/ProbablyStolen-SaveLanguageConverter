@@ -1,0 +1,18 @@
+[h1]Save Language Converter[/h1]
+Started a save in one language and now play in another? Item names, customers and logs stay in the old language. This mod fixes that, safely.
+
+[h2]How it works[/h2]
+[list]
+[*]Load a save that was started in another language. The game's warning now has a third button: [b]Convert a copy[/b].
+[*]The save is duplicated with the game's own slot copy, including all earlier days.
+[*]The copy's item names, descriptions, liquids, customers, factions, news, night logs and notes are switched to your current language using the game's own translations.
+[*]Your original save is never touched. [b]Confirm[/b] still loads it unchanged.
+[/list]
+
+[h2]Notes[/h2]
+[list]
+[*]Works between any of the game's languages.
+[*]Text added by other mods, and names you typed yourself, stay as written.
+[*]Needs no special permissions.
+[*]Built for game version 0.46D.
+[/list]

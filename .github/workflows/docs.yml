@@ -1,0 +1,12 @@
+name: Documentation
+
+on:
+  push:
+    branches: [main]
+    paths: ['doc/**', '.github/workflows/docs.yml']
+  pull_request:
+    paths: ['doc/**', '.github/workflows/docs.yml']
+
+jobs:
+  docs:
+    uses: KCN-judu/ProbablyStolen-Mods/.github/workflows/check-docs.yml@main

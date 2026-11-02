@@ -1,0 +1,16 @@
+# Save Language Converter - 简体中文 (zh)
+button_convert,转换副本
+dialog_hint,转换副本：复制此存档，并把其中文字换成{0}。原存档保持不变。
+copy_name,{0}（{1}）
+copy_failed,无法复制存档，未做任何修改。
+lang_en,English
+lang_zh,简体中文
+lang_ja,日本語
+lang_ko,한국어
+lang_de,Deutsch
+lang_fr,Français
+lang_es,Español
+lang_it,Italiano
+lang_pl,Polski
+lang_ru,Русский
+lang_ptbr,Português (Brasil)
