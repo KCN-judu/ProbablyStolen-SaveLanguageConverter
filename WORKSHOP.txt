@@ -24,3 +24,32 @@ Started a save in one language and now play in another? Item names, customers an
 [*][url=https://github.com/KCN-judu/ProbablyStolen-Mods]All mods by KCN-judu[/url]
 [/list]
 Bug reports and suggestions are welcome on GitHub or in the comments.
+
+[hr][/hr]
+
+[h1]存档语言转换[/h1]
+用一种语言开的档，现在换了语言玩？物品名、顾客和日志还停留在旧语言。这个模组可以安全地解决这个问题。
+
+[h2]使用方式[/h2]
+[list]
+[*]读取用其他语言开始的存档，游戏的提示框里会多出第三个按钮：[b]转换副本[/b]（Convert a copy）。
+[*]存档会用游戏自带的存档复制功能复制一份，包括之前的所有天数。
+[*]副本里的物品名称、描述、液体、顾客、阵营、新闻、夜间日志和笔记，会用游戏自己的翻译切换到你当前的语言。
+[*]原存档完全不会被改动，点 [b]确认[/b] 仍会原样读取它。
+[/list]
+
+[h2]说明[/h2]
+[list]
+[*]支持游戏的任意两种语言之间转换。
+[*]其他模组添加的文字和你自己输入的名字保持原样。
+[*]不需要任何特殊权限。
+[*]适用于游戏版本 0.46D。
+[/list]
+
+[h2]源码与文档[/h2]
+[list]
+[*][url=https://kcn-judu.github.io/ProbablyStolen-Mods/zh-cn/save-language-converter/]中文文档[/url]
+[*][url=https://github.com/KCN-judu/ProbablyStolen-SaveLanguageConverter]GitHub 源码[/url]，Apache License 2.0
+[*][url=https://github.com/KCN-judu/ProbablyStolen-Mods]KCN-judu 的全部模组[/url]
+[/list]
+欢迎在 GitHub 或评论区反馈问题和建议。
