@@ -132,30 +132,70 @@ msgid "The save classes the walker may visit are listed in `src/KnownTypes.g.cs`
 msgstr "遍历器可以访问的存档类列在 `src/KnownTypes.g.cs` 中，由 `tools/Closure.cs` 从游戏 DLL 生成。"
 
 #: manual/how-it-works.md:25
+msgid "Performance"
+msgstr "性能"
+
+#: manual/how-it-works.md:27
+msgid "How each step grows with the size of a save, and what the optimizations changed. L is the length of the save text, S the number of strings in it, E the number of strings that change, and T the number of templates in the source language (693 for English)."
+msgstr "各个步骤的开销如何随存档大小增长，以及优化改变了什么。L 是存档文本的长度，S 是其中字符串的数量，E 是要改动的字符串数量，T 是源语言中模板的数量（英文为 693 个）。"
+
+#: manual/how-it-works.md:29
+msgid "Rewriting the save. The rewriter used to replace each changed string in place in one buffer. Every replacement shifted the rest of the save, so a conversion cost O(E·L). It now records the replacements during a single walk and then copies the save once, the unchanged slices and the replacements in order, which costs O(L + E). On a 13 MB save with about 4,200 changes the rewrite went from about 3 s to 0.35 s, and the output is byte for byte the same. In the game a whole conversion, building the tables included, takes about 0.55 s."
+msgstr "改写存档。改写器原先在同一个缓冲区里就地替换每个改动的字符串，每次替换都要把存档其余部分整体挪动一次，所以一次转换的开销是 O(E·L)。现在它在一次遍历中记下所有替换，然后把存档复制一遍，按顺序拼接未改动的片段和替换内容，开销为 O(L + E)。在一个约 4,200 处改动的 13 MB 存档上，改写从约 3 秒降到 0.35 秒，输出逐字节相同。在游戏里，一次完整转换（含建表）约需 0.55 秒。"
+
+#: manual/how-it-works.md:31
+msgid "Deciding which fields hold ids. The answer for a field name is worked out once and remembered, so each string costs one hash lookup instead of running the rules again."
+msgstr "判断哪些字段存的是 id。每个字段名的结论只计算一次并记住，所以每个字符串只需一次哈希查找，不必再把规则跑一遍。"
+
+#: manual/how-it-works.md:33
+msgid "Matching one string of length n:"
+msgstr "匹配一个长度为 n 的字符串："
+
+#: manual/how-it-works.md:35
+msgid "An exact entry is one hash lookup, O(n)."
+msgstr "完全匹配的条目只需一次哈希查找，O(n)。"
+
+#: manual/how-it-works.md:36
+msgid "Text without nearby context is remembered after its first match, so each distinct text is matched once per conversion."
+msgstr "没有附近上下文的文字在第一次匹配后会被记住，所以每种不同的文字在一次转换中只匹配一次。"
+
+#: manual/how-it-works.md:37
+msgid "Templates are tried one after another, O(T·n) at worst. A template whose fixed text does not occur in the string is skipped before its pattern runs, so most are ruled out by one substring search."
+msgstr "模板逐个尝试，最坏 O(T·n)。如果模板的固定文字不在字符串中出现，就在运行其匹配模式之前跳过，所以大多数模板只需一次子串查找就能排除。"
+
+#: manual/how-it-works.md:38
+msgid "Text concatenated from several entries is split by a shortest segmentation over pieces of up to 80 characters. That is O(80·n) dictionary lookups, and it is only tried for strings of up to 160 characters."
+msgstr "由多个条目拼接而成的文字，用最短切分拆成长度不超过 80 个字符的片段，需要 O(80·n) 次字典查找，并且只对不超过 160 个字符的字符串尝试。"
+
+#: manual/how-it-works.md:39
+msgid "Multi-line text tries runs of consecutive lines, O(m²) lookups for m lines."
+msgstr "多行文字尝试连续若干行的组合，m 行需要 O(m²) 次查找。"
+
+#: manual/how-it-works.md:41
 msgid "Tests"
 msgstr "测试"
 
-#: manual/how-it-works.md:27
+#: manual/how-it-works.md:43
 msgid "The engine is kept apart from the game and Unity in `src/*.Pure.cs`, which use nothing but plain C#: the matcher in `Translator.Pure.cs` and the save rewriter in `JsonText.Pure.cs`. The code that talks to the game only reads the string tables and the loaded save and passes them on."
 msgstr "引擎与游戏和 Unity 分开，放在 `src/*.Pure.cs` 中，只使用纯 C#：匹配器在 `Translator.Pure.cs`，存档改写器在 `JsonText.Pure.cs`。与游戏交互的代码只负责读取字符串表和已载入的存档，再交给引擎处理。"
 
-#: manual/how-it-works.md:29
+#: manual/how-it-works.md:45
 msgid "`tests/run.sh` runs `tests/PureTest.cs`, which checks the engine on hand-made table entries without the game, Unity or a save: exact entries, templates and their arguments, choosing between entries that share a source string, untranslated text, and rewriting JSON in place. With the game installed it also runs the mod scanner."
 msgstr "`tests/run.sh` 运行 `tests/PureTest.cs`，用手工编写的表项检验引擎，不需要游戏、Unity 或存档：精确条目、模板及其参数、在共用同一原文的条目之间选择、未翻译的文字，以及原地改写 JSON。装了游戏时，它还会运行模组扫描器。"
 
-#: manual/how-it-works.md:31
+#: manual/how-it-works.md:47
 msgid "`tests/EngineTest.cs` runs the engine outside the game, on string tables exported from the game's bundles and on a real save. For the Chinese save it was developed with:"
 msgstr "`tests/EngineTest.cs` 在游戏之外运行转换引擎，使用从游戏资源包导出的字符串表和一个真实存档。对开发时使用的中文存档："
 
-#: manual/how-it-works.md:33
+#: manual/how-it-works.md:49
 msgid "Chinese to English: 492 of 492 distinct texts match a hand-checked conversion, and 60,719 of 60,721 strings in the whole save are identical. The 2 differences are intentional: sprite bookkeeping is left alone, and `startLocale` is set by the mod."
 msgstr "中文转英文：492 条不同文字全部与人工核对的结果一致，整个存档 60,721 个字符串中有 60,719 个完全相同。剩下 2 处差异是有意为之：贴图记录保持不动，`startLocale` 由模组设置。"
 
-#: manual/how-it-works.md:34
+#: manual/how-it-works.md:50
 msgid "English to Chinese: no Chinese text is lost. The differences are one-to-many cases, where one English line has several Chinese ones, and English names the game also keeps in Chinese saves."
 msgstr "英文转中文：没有丢失任何中文。差异都是一对多的情况（一句英文对应多句中文），以及游戏在中文存档里也保留的英文名称。"
 
-#: manual/how-it-works.md:36
+#: manual/how-it-works.md:52
 msgid "`tests/ScanTest.cs` runs the game's own mod scanner on the built DLL. The result is no capabilities and not refused."
 msgstr "`tests/ScanTest.cs` 用游戏自己的模组扫描器检查构建好的 DLL，结果是不需要任何权限，也没有被拒绝。"
 

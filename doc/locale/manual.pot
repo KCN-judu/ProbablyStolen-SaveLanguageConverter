@@ -132,30 +132,70 @@ msgid "The save classes the walker may visit are listed in `src/KnownTypes.g.cs`
 msgstr ""
 
 #: manual/how-it-works.md:25
-msgid "Tests"
+msgid "Performance"
 msgstr ""
 
 #: manual/how-it-works.md:27
-msgid "The engine is kept apart from the game and Unity in `src/*.Pure.cs`, which use nothing but plain C#: the matcher in `Translator.Pure.cs` and the save rewriter in `JsonText.Pure.cs`. The code that talks to the game only reads the string tables and the loaded save and passes them on."
+msgid "How each step grows with the size of a save, and what the optimizations changed. L is the length of the save text, S the number of strings in it, E the number of strings that change, and T the number of templates in the source language (693 for English)."
 msgstr ""
 
 #: manual/how-it-works.md:29
-msgid "`tests/run.sh` runs `tests/PureTest.cs`, which checks the engine on hand-made table entries without the game, Unity or a save: exact entries, templates and their arguments, choosing between entries that share a source string, untranslated text, and rewriting JSON in place. With the game installed it also runs the mod scanner."
+msgid "Rewriting the save. The rewriter used to replace each changed string in place in one buffer. Every replacement shifted the rest of the save, so a conversion cost O(E·L). It now records the replacements during a single walk and then copies the save once, the unchanged slices and the replacements in order, which costs O(L + E). On a 13 MB save with about 4,200 changes the rewrite went from about 3 s to 0.35 s, and the output is byte for byte the same. In the game a whole conversion, building the tables included, takes about 0.55 s."
 msgstr ""
 
 #: manual/how-it-works.md:31
-msgid "`tests/EngineTest.cs` runs the engine outside the game, on string tables exported from the game's bundles and on a real save. For the Chinese save it was developed with:"
+msgid "Deciding which fields hold ids. The answer for a field name is worked out once and remembered, so each string costs one hash lookup instead of running the rules again."
 msgstr ""
 
 #: manual/how-it-works.md:33
-msgid "Chinese to English: 492 of 492 distinct texts match a hand-checked conversion, and 60,719 of 60,721 strings in the whole save are identical. The 2 differences are intentional: sprite bookkeeping is left alone, and `startLocale` is set by the mod."
+msgid "Matching one string of length n:"
 msgstr ""
 
-#: manual/how-it-works.md:34
-msgid "English to Chinese: no Chinese text is lost. The differences are one-to-many cases, where one English line has several Chinese ones, and English names the game also keeps in Chinese saves."
+#: manual/how-it-works.md:35
+msgid "An exact entry is one hash lookup, O(n)."
 msgstr ""
 
 #: manual/how-it-works.md:36
+msgid "Text without nearby context is remembered after its first match, so each distinct text is matched once per conversion."
+msgstr ""
+
+#: manual/how-it-works.md:37
+msgid "Templates are tried one after another, O(T·n) at worst. A template whose fixed text does not occur in the string is skipped before its pattern runs, so most are ruled out by one substring search."
+msgstr ""
+
+#: manual/how-it-works.md:38
+msgid "Text concatenated from several entries is split by a shortest segmentation over pieces of up to 80 characters. That is O(80·n) dictionary lookups, and it is only tried for strings of up to 160 characters."
+msgstr ""
+
+#: manual/how-it-works.md:39
+msgid "Multi-line text tries runs of consecutive lines, O(m²) lookups for m lines."
+msgstr ""
+
+#: manual/how-it-works.md:41
+msgid "Tests"
+msgstr ""
+
+#: manual/how-it-works.md:43
+msgid "The engine is kept apart from the game and Unity in `src/*.Pure.cs`, which use nothing but plain C#: the matcher in `Translator.Pure.cs` and the save rewriter in `JsonText.Pure.cs`. The code that talks to the game only reads the string tables and the loaded save and passes them on."
+msgstr ""
+
+#: manual/how-it-works.md:45
+msgid "`tests/run.sh` runs `tests/PureTest.cs`, which checks the engine on hand-made table entries without the game, Unity or a save: exact entries, templates and their arguments, choosing between entries that share a source string, untranslated text, and rewriting JSON in place. With the game installed it also runs the mod scanner."
+msgstr ""
+
+#: manual/how-it-works.md:47
+msgid "`tests/EngineTest.cs` runs the engine outside the game, on string tables exported from the game's bundles and on a real save. For the Chinese save it was developed with:"
+msgstr ""
+
+#: manual/how-it-works.md:49
+msgid "Chinese to English: 492 of 492 distinct texts match a hand-checked conversion, and 60,719 of 60,721 strings in the whole save are identical. The 2 differences are intentional: sprite bookkeeping is left alone, and `startLocale` is set by the mod."
+msgstr ""
+
+#: manual/how-it-works.md:50
+msgid "English to Chinese: no Chinese text is lost. The differences are one-to-many cases, where one English line has several Chinese ones, and English names the game also keeps in Chinese saves."
+msgstr ""
+
+#: manual/how-it-works.md:52
 msgid "`tests/ScanTest.cs` runs the game's own mod scanner on the built DLL. The result is no capabilities and not refused."
 msgstr ""
 
