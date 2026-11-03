@@ -43,9 +43,17 @@ namespace SaveLanguageConverter
             var edits = new List<Edit>();
             Walk(root, null, null, rewriter, contextOf, edits);
             if (edits.Count == 0) return json;
-            edits.Sort((a, b) => b.Start.CompareTo(a.Start));
-            var sb = new StringBuilder(json);
-            foreach (var e in edits) sb.Remove(e.Start, e.End - e.Start).Insert(e.Start, e.Text);
+            // One pass from the start, copying what lies between the edits: linear in the size of the text. Editing in
+            // place would shift the rest of the text for every edit, which is slow on a save of many megabytes.
+            edits.Sort((a, b) => a.Start.CompareTo(b.Start));
+            var sb = new StringBuilder(json.Length + 256);
+            int at = 0;
+            foreach (var e in edits)
+            {
+                sb.Append(json, at, e.Start - at).Append(e.Text);
+                at = e.End;
+            }
+            sb.Append(json, at, json.Length - at);
             return sb.ToString();
         }
 
