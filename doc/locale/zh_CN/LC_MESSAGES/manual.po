@@ -196,29 +196,33 @@ msgid "The game's next normal save writes the converted text. Earlier days of th
 msgstr "游戏下一次正常存档时会写入转换后的文字。副本中更早的天数在读取时也会以同样方式转换。"
 
 #: manual/index.md:15
+msgid "If you changed the language since starting the game, the copy is made but not loaded, and a message asks you to restart the game first. The game fixes some text, such as the water qualities customers ask for, in the language it started in and keeps it until a restart, so a copy loaded right away would mix the two languages. After the restart, load the copy: it is converted then."
+msgstr "如果你在游戏启动后更改过语言，副本会被创建但不会被读取，并会提示你先重启游戏。游戏会把部分文字（例如顾客想要的水质）固定为启动时的语言，直到重启才更新，所以立即读取的副本会混用两种语言。重启后再读取副本，它会在那时被转换。"
+
+#: manual/index.md:17
 msgid "Choosing **Confirm** still loads the save unchanged. The original save is never modified."
 msgstr "选择 **确认** 仍会原样读取存档。原存档永远不会被修改。"
 
-#: manual/index.md:17
+#: manual/index.md:19
 msgid "What is converted"
 msgstr "转换的内容"
 
-#: manual/index.md:19
+#: manual/index.md:21
 msgid "Item names and descriptions, liquids, customers, factions, news, night logs and notes. The conversion works between any two of the game's languages."
 msgstr "物品名称和描述、液体、顾客、派系、新闻、夜间日志和笔记。转换适用于游戏支持的任意两种语言之间。"
 
-#: manual/index.md:21
+#: manual/index.md:23
 msgid "Limits"
 msgstr "限制"
 
-#: manual/index.md:23
+#: manual/index.md:25
 msgid "Text added by other mods is not converted. Only the game's own string tables are used."
 msgstr "其他模组添加的文字不会被转换，只使用游戏自带的字符串表。"
 
-#: manual/index.md:24
+#: manual/index.md:26
 msgid "Text that is not game text, such as names you typed or custom labels, stays as written."
 msgstr "不属于游戏文字的内容，比如你输入的名字或自定义标签，保持原样。"
 
-#: manual/index.md:25
+#: manual/index.md:27
 msgid "Tested against game version 0.46D."
 msgstr "已在游戏版本 0.46D 上测试。"

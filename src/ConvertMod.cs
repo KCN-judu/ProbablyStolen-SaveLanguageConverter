@@ -250,6 +250,16 @@ namespace SaveLanguageConverter
                     var entry = SaveFiles.LoadHistory(p.SlotId).FirstOrDefault(h => h.file == p.File);
                     if (entry != null) newFile = SaveFiles.HistoryFile(newSlot, entry.dayCount, entry.saveDateTime);
                 }
+                // The game fixes some text, such as the water qualities that customers ask for, in the language it
+                // started in, and keeps it after a language change. Loaded now, the copy would mix the two, so after a
+                // change the copy waits for a restart; it is converted when it is loaded then.
+                if (StartedInAnotherLanguage())
+                {
+                    Debug.Log(Tag + "copied slot " + p.SlotId + " (" + p.From + ") to slot " + newSlot + " for " + p.To + "; the game started in another language, asking for a restart");
+                    InvokeLoadGameUI("ShowDialog", LocHelper.GetLocalizedMainMenu("load_game", new object[0]),
+                        L("restart_needed", copyName, LanguageName(p.To)), null, false);
+                    return;
+                }
                 Debug.Log(Tag + "copied slot " + p.SlotId + " (" + p.From + ") to slot " + newSlot + " for " + p.To + ", loading " + (newFile ?? "latest"));
                 InvokeLoadGameUI("LoadSlot", newSlot, newFile);
             }
@@ -257,6 +267,23 @@ namespace SaveLanguageConverter
             {
                 Debug.LogError(Tag + "conversion failed: " + e);
                 InvokeLoadGameUI("ShowDialog", LocHelper.GetLocalizedMainMenu("load_game", new object[0]), L("copy_failed"), null, false);
+            }
+        }
+
+        // True when the water qualities the game fixed at its first use are not in the current language, i.e. the
+        // language was changed since the game started. Reading them now fixes them in the current language if the
+        // game has not used them yet, which is right.
+        static bool StartedInAnotherLanguage()
+        {
+            try
+            {
+                string live = LocHelper.GetLocalizedMechanic("mech_condition_pure_water", new object[0]);
+                return !string.IsNullOrEmpty(live) && WaterFeatureHelper.PURE_WATER_DISPLAY != live;
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning(Tag + "could not compare the game's fixed text with the current language: " + e.Message);
+                return false;
             }
         }
 

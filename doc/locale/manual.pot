@@ -196,29 +196,33 @@ msgid "The game's next normal save writes the converted text. Earlier days of th
 msgstr ""
 
 #: manual/index.md:15
-msgid "Choosing **Confirm** still loads the save unchanged. The original save is never modified."
+msgid "If you changed the language since starting the game, the copy is made but not loaded, and a message asks you to restart the game first. The game fixes some text, such as the water qualities customers ask for, in the language it started in and keeps it until a restart, so a copy loaded right away would mix the two languages. After the restart, load the copy: it is converted then."
 msgstr ""
 
 #: manual/index.md:17
-msgid "What is converted"
+msgid "Choosing **Confirm** still loads the save unchanged. The original save is never modified."
 msgstr ""
 
 #: manual/index.md:19
-msgid "Item names and descriptions, liquids, customers, factions, news, night logs and notes. The conversion works between any two of the game's languages."
+msgid "What is converted"
 msgstr ""
 
 #: manual/index.md:21
-msgid "Limits"
+msgid "Item names and descriptions, liquids, customers, factions, news, night logs and notes. The conversion works between any two of the game's languages."
 msgstr ""
 
 #: manual/index.md:23
-msgid "Text added by other mods is not converted. Only the game's own string tables are used."
-msgstr ""
-
-#: manual/index.md:24
-msgid "Text that is not game text, such as names you typed or custom labels, stays as written."
+msgid "Limits"
 msgstr ""
 
 #: manual/index.md:25
+msgid "Text added by other mods is not converted. Only the game's own string tables are used."
+msgstr ""
+
+#: manual/index.md:26
+msgid "Text that is not game text, such as names you typed or custom labels, stays as written."
+msgstr ""
+
+#: manual/index.md:27
 msgid "Tested against game version 0.46D."
 msgstr ""

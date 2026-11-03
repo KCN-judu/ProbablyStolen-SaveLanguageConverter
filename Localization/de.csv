@@ -3,6 +3,7 @@ button_convert,Kopie umwandeln
 dialog_hint,Kopie umwandeln: dupliziert diesen Spielstand und stellt seine Texte auf {0} um. Das Original bleibt unverändert.
 copy_name,{0} ({1})
 copy_failed,Der Spielstand konnte nicht kopiert werden. Es wurde nichts geändert.
+restart_needed,Die Kopie „{0}“ ist bereit. Das Spiel wurde in einer anderen Sprache gestartet und behält manche Texte, etwa die von Kunden gewünschten Wasserqualitäten, bis zum Neustart. Starte das Spiel neu und lade dann die Kopie: Sie wird beim Laden in {1} umgewandelt.
 lang_en,English
 lang_zh,简体中文
 lang_ja,日本語

@@ -3,6 +3,7 @@ button_convert,Convertir une copie
 dialog_hint,Convertir une copie : duplique cette sauvegarde et passe ses textes en {0}. L’original reste intact.
 copy_name,{0} ({1})
 copy_failed,La sauvegarde n’a pas pu être copiée. Rien n’a été modifié.
+restart_needed,La copie « {0} » est prête. Le jeu a été lancé dans une autre langue et garde certains textes, comme les qualités d'eau demandées par les clients, jusqu'au redémarrage. Redémarrez le jeu, puis chargez la copie : elle sera convertie en {1} au chargement.
 lang_en,English
 lang_zh,简体中文
 lang_ja,日本語

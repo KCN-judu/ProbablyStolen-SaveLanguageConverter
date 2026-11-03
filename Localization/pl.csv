@@ -3,6 +3,7 @@ button_convert,Przekonwertuj kopię
 dialog_hint,Przekonwertuj kopię: duplikuje ten zapis i zmienia jego teksty na {0}. Oryginał pozostaje bez zmian.
 copy_name,{0} ({1})
 copy_failed,Nie udało się skopiować zapisu. Nic nie zostało zmienione.
+restart_needed,Kopia „{0}” jest gotowa. Gra została uruchomiona w innym języku i do restartu zachowuje część tekstów, np. jakości wody, o które proszą klienci. Uruchom grę ponownie, a potem wczytaj kopię: przy wczytaniu zostanie przekonwertowana na {1}.
 lang_en,English
 lang_zh,简体中文
 lang_ja,日本語

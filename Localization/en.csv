@@ -3,6 +3,7 @@ button_convert,Convert a copy
 dialog_hint,Convert a copy: duplicates this save and switches its text to {0}. The original stays as it is.
 copy_name,{0} ({1})
 copy_failed,The save could not be copied. Nothing was changed.
+restart_needed,The copy “{0}” is ready. The game was started in another language and keeps some of its text, such as the water qualities customers ask for, until a restart. Restart the game, then load the copy: it is converted to {1} when it loads.
 lang_en,English
 lang_zh,简体中文
 lang_ja,日本語

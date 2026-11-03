@@ -3,6 +3,7 @@ button_convert,Converti una copia
 dialog_hint,Converti una copia: duplica questo salvataggio e ne porta i testi in {0}. L’originale resta com’è.
 copy_name,{0} ({1})
 copy_failed,Impossibile copiare il salvataggio. Non è stato modificato nulla.
+restart_needed,La copia «{0}» è pronta. Il gioco è stato avviato in un'altra lingua e mantiene alcuni testi, come le qualità d'acqua richieste dai clienti, fino al riavvio. Riavvia il gioco, poi carica la copia: verrà convertita in {1} al caricamento.
 lang_en,English
 lang_zh,简体中文
 lang_ja,日本語

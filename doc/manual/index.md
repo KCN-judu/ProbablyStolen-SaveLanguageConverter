@@ -12,6 +12,8 @@ Started a save in one language and now play in another? Item names, customers, n
 4. Right after the game reads the copy, and before inventories are rebuilt, every piece of text the game wrote in the old language is switched to the current one.
 5. The game's next normal save writes the converted text. Earlier days of the copy are converted the same way when you load them.
 
+If you changed the language since starting the game, the copy is made but not loaded, and a message asks you to restart the game first. The game fixes some text, such as the water qualities customers ask for, in the language it started in and keeps it until a restart, so a copy loaded right away would mix the two languages. After the restart, load the copy: it is converted then.
+
 Choosing **Confirm** still loads the save unchanged. The original save is never modified.
 
 ## What is converted
