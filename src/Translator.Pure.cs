@@ -105,6 +105,16 @@ namespace SaveLanguageConverter
             return char.IsLetterOrDigit(ch) && ch < '⺀';
         }
 
+        // The translation of a text that is exactly one entry, from a table other than `skipTable`; null otherwise.
+        // No templates, concatenations or suffixes: for fields where only a whole game entry may be replaced.
+        public string TranslateExact(string s, ICollection<string> context, string skipTable)
+        {
+            List<Candidate> cands;
+            if (string.IsNullOrEmpty(s) || !exact.TryGetValue(s, out cands)) return null;
+            var allowed = cands.Where(c => c.Table != skipTable).ToList();
+            return allowed.Count == 0 ? null : Choose(allowed, context);
+        }
+
         // Returns the translation, or null when the text is not (entirely) game text.
         // context: lowercase tokens of ids found next to the text, used to pick between entries that share a source string.
         public string Translate(string s, ICollection<string> context)

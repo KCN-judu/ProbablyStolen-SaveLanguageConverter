@@ -3,6 +3,7 @@
 ## 1.1.1
 
 - The three buttons of the language warning are laid out cleanly: each button's frame and label now shrink with it, so the frames no longer overlap or stick out.
+- Converting into a language other than English now also translates the night services and events, such as Insurance Service, which were left in English. People's names stay as the game keeps them.
 
 ## 1.1.0
 

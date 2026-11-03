@@ -31,7 +31,8 @@ namespace SaveLanguageConverter
         };
 
         // Localized, but the same fields also keep some names in English in a Chinese save (phone contacts,
-        // brand names). English text there is left alone; only non-ASCII text is converted.
+        // brand names). English text there is only replaced when it is exactly one entry outside the ClientName table
+        // (night services, events); non-ASCII text is converted as usual.
         static readonly HashSet<string> Mixed = new HashSet<string>(StringComparer.Ordinal)
         {
             "displayName", "internalValueString",
@@ -76,9 +77,14 @@ namespace SaveLanguageConverter
 
             bool nonAscii = false;
             foreach (char c in value) if (c > 127) { nonAscii = true; break; }
-            if (!nonAscii && (IsIdLike(value) || member == null || !Localized.Contains(member) || Mixed.Contains(member))) return null;
+            if (!nonAscii && (IsIdLike(value) || member == null || !Localized.Contains(member))) return null;
 
-            string t = translator.Translate(value, context);
+            // In a mixed field, text in a Latin script is only replaced when it is exactly one game entry, and never a
+            // person's name: the game keeps contacts in English, but names services and events in the player's language.
+            // A person is recognised by the entry it was made from, a locID such as name_odin, next to the text.
+            bool mixedLatin = !nonAscii && Mixed.Contains(member);
+            if (mixedLatin && context != null && context.Contains("name")) return null;
+            string t = mixedLatin ? translator.TranslateExact(value, context, "ClientName") : translator.Translate(value, context);
             if (t == null)
             {
                 if (translator.LooksUntranslated(value))

@@ -43,6 +43,19 @@ static class PureTest
         Same("the entry whose key shares words with the ids next to the text wins", "Unappetizing", tr.Translate("难吃", ctx));
         Same("without context, the more central table wins", "Unappetizing", tr.Translate("难吃", null));
 
+        Console.WriteLine("-- whole entries only (mixed fields: services and events, never people)");
+        var en = new Translator("en");
+        en.Add("Mechanic", 2, "service_insurance", "Insurance Service", "保险服务");
+        en.Add("ClientName", 1, "name_dale", "Dale", "戴尔");
+        en.Add("ClientName", 1, "name_hypertech_smuggler", "Hypertech Smuggler", "高科技走私者");
+        en.Add("Mechanic", 2, "service_hypertech_smuggler", "Hypertech Smuggler", "高科技走私服务");
+        en.Add("Mechanic", 2, "mech_durability", "Durability: {0}", "耐久度：{0}");
+        Same("a service name, exactly one entry, is replaced", "保险服务", en.TranslateExact("Insurance Service", null, "ClientName"));
+        Check("a person's name, only in ClientName, is kept", en.TranslateExact("Dale", null, "ClientName") == null);
+        Same("a name in ClientName and elsewhere takes the other table", "高科技走私服务", en.TranslateExact("Hypertech Smuggler", null, "ClientName"));
+        Check("no templates in a mixed field", en.TranslateExact("Durability: 5", null, "ClientName") == null);
+        Check("text that is no entry is kept", en.TranslateExact("Dumping Grounds", null, "ClientName") == null);
+
         Console.WriteLine("-- untranslated text");
         Check("Chinese text left in an English save is noticed", tr.LooksUntranslated("还有中文"));
         Check("English text is not flagged", !tr.LooksUntranslated("Pure Water"));

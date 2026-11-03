@@ -124,7 +124,7 @@ msgid "Choosing what to convert"
 msgstr ""
 
 #: manual/how-it-works.md:21
-msgid "`src/SaveWalker.cs` decides what is display text. Non-ASCII text is converted in any field that is not an id. ASCII text is converted only in fields the game is known to localize. The allow-list was found by comparing a Chinese save with the tables. Fields such as `subtitle` hold English even in a Chinese save, so they are internal names and stay unchanged."
+msgid "`src/SaveWalker.cs` decides what is display text. Non-ASCII text is converted in any field that is not an id. ASCII text is converted only in fields the game is known to localize. The allow-list was found by comparing a Chinese save with the tables. Fields such as `subtitle` hold English even in a Chinese save, so they are internal names and stay unchanged. A few fields, such as `displayName`, hold both: people's names, which the game keeps in English, and the names of night services and events, which it shows in the player's language. There English text is replaced only when it is exactly one game entry and not a person's name; a person is recognised by the `name_` id stored with it."
 msgstr ""
 
 #: manual/how-it-works.md:23
