@@ -168,9 +168,9 @@ namespace SaveLanguageConverter
             float right = cancelPos.x + (1f - px) * cancelSize.x;
             float gap = Mathf.Max(8f, (cancelPos.x - confirmPos.x) - confirmSize.x);
             float w = (right - left - 2f * gap) / 3f;
-            confirmRoot.sizeDelta = new Vector2(w, confirmSize.y);
-            convertRoot.sizeDelta = new Vector2(w, confirmSize.y);
-            cancelRoot.sizeDelta = new Vector2(w, cancelSize.y);
+            SetWidth(confirmRoot, w);
+            SetWidth(convertRoot, w);
+            SetWidth(cancelRoot, w);
             confirmRoot.anchoredPosition = new Vector2(left + px * w, confirmPos.y);
             convertRoot.anchoredPosition = new Vector2(left + w + gap + px * w, confirmPos.y);
             cancelRoot.anchoredPosition = new Vector2(left + 2f * (w + gap) + px * w, cancelPos.y);
@@ -181,13 +181,29 @@ namespace SaveLanguageConverter
             if (frame.dialogText != null) frame.dialogText.text += "\n" + L("dialog_hint", LanguageName(p.To));
         }
 
+        // The game's dialog buttons draw their frames and label as fixed-size children, so a narrower button
+        // takes its children along: each loses the same width, keeping its insets and its centred text.
+        static void SetWidth(RectTransform root, float width)
+        {
+            float delta = width - root.sizeDelta.x;
+            if (delta == 0f) return;
+            root.sizeDelta = new Vector2(width, root.sizeDelta.y);
+            foreach (Transform t in root)
+            {
+                var child = t as RectTransform;
+                // A child stretched across the button follows it by itself.
+                if (child == null || child.anchorMin.x != child.anchorMax.x) continue;
+                child.sizeDelta = new Vector2(child.sizeDelta.x + delta, child.sizeDelta.y);
+            }
+        }
+
         static void HideConvertButton()
         {
             if (convertRoot != null) convertRoot.gameObject.SetActive(false);
             if (layoutChanged && confirmRoot != null && cancelRoot != null)
             {
-                confirmRoot.anchoredPosition = confirmPos; confirmRoot.sizeDelta = confirmSize;
-                cancelRoot.anchoredPosition = cancelPos; cancelRoot.sizeDelta = cancelSize;
+                confirmRoot.anchoredPosition = confirmPos; SetWidth(confirmRoot, confirmSize.x);
+                cancelRoot.anchoredPosition = cancelPos; SetWidth(cancelRoot, cancelSize.x);
             }
             layoutChanged = false;
         }

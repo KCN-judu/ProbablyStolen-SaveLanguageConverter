@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.1
+
+- The three buttons of the language warning are laid out cleanly: each button's frame and label now shrink with it, so the frames no longer overlap or stick out.
+
 ## 1.1.0
 
 - In-game text in every language the game supports: German, Spanish, French, Italian, Japanese, Korean, Polish, Brazilian Portuguese and Russian, besides English and Chinese.
