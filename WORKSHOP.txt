@@ -1,5 +1,13 @@
 [h1]Save Language Converter[/h1]
-Started a save in one language and now play in another? Item names, customers and logs stay in the old language. This mod fixes that, safely.
+Started a save in one language and now play in another? Item names, customers and logs stay in the old language. This mod converts a copy of the save to your current language. The original stays untouched.
+
+[h2]What's new in 1.1.1[/h2]
+[list]
+[*]The three buttons of the language warning no longer overlap.
+[*]After a language change in the running game, the copy is made but not loaded. A message asks you to restart the game first, because the game keeps some text, such as the water qualities customers ask for, in the language it started in.
+[*]Converting is several times faster.
+[*]Night services and events, such as Insurance Service, are now translated too. People's names stay as the game keeps them.
+[/list]
 
 [h2]How it works[/h2]
 [list]
@@ -13,7 +21,7 @@ Started a save in one language and now play in another? Item names, customers an
 [list]
 [*]Works between any of the game's languages.
 [*]Text added by other mods, and names you typed yourself, stay as written.
-[*]Needs no special permissions.
+[*]Needs no permissions.
 [*]Built for game version 0.46D.
 [/list]
 
@@ -28,21 +36,29 @@ Bug reports and suggestions are welcome on GitHub or in the comments.
 [hr][/hr]
 
 [h1]存档语言转换[/h1]
-用一种语言开的档，现在换了语言玩？物品名、顾客和日志还停留在旧语言。这个模组可以安全地解决这个问题。
+用一种语言开的存档，换成另一种语言再玩，物品名、顾客和日志还是旧语言。这个模组把存档复制一份，把副本转换成你现在的语言，原存档不动。
 
-[h2]使用方式[/h2]
+[h2]1.1.1 更新内容[/h2]
 [list]
-[*]读取用其他语言开始的存档，游戏的提示框里会多出第三个按钮：[b]转换副本[/b]（Convert a copy）。
-[*]存档会用游戏自带的存档复制功能复制一份，包括之前的所有天数。
-[*]副本里的物品名称、描述、液体、顾客、阵营、新闻、夜间日志和笔记，会用游戏自己的翻译切换到你当前的语言。
-[*]原存档完全不会被改动，点 [b]确认[/b] 仍会原样读取它。
+[*]语言警告框的三个按钮不再重叠。
+[*]游戏运行中改过语言时，模组会复制存档但不读取副本，并提示先重启游戏。游戏会把一部分文字（比如顾客想要的水质）固定成启动时的语言，重启后才更新。
+[*]转换速度快了好几倍。
+[*]夜间服务和事件的名称（比如保险服务）现在也会转换。人物名字保持游戏里的样子。
+[/list]
+
+[h2]使用方法[/h2]
+[list]
+[*]读取用其他语言开始的存档，游戏的警告框里会多一个按钮：[b]转换副本[/b]（Convert a copy）。
+[*]模组用游戏自带的存档复制功能复制存档，之前的所有天数一并复制。
+[*]副本里的物品名称、描述、液体、顾客、派系、新闻、夜间日志和笔记，会用游戏自己的译文换成你当前的语言。
+[*]原存档不会被改动，点 [b]确认[/b] 仍会原样读取它。
 [/list]
 
 [h2]说明[/h2]
 [list]
-[*]支持游戏的任意两种语言之间转换。
+[*]游戏支持的任意两种语言之间都能转换。
 [*]其他模组添加的文字和你自己输入的名字保持原样。
-[*]不需要任何特殊权限。
+[*]不需要任何权限。
 [*]适用于游戏版本 0.46D。
 [/list]
 

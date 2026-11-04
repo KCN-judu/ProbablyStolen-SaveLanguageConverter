@@ -1,6 +1,6 @@
 # Save Language Converter
 
-Started a save in one language and now play in another? Item names, customers, news and logs stay in the old language. This mod converts a copy of the save to the language you play in, using the game's own translations.
+If you started a save in one language and now play in another, item names, customers, news and logs stay in the old language. This mod converts a copy of the save to the language you play in, using the game's own translations.
 
 ![Save Language Converter cover](../attachments/cover.png)
 
@@ -18,10 +18,10 @@ Choosing **Confirm** still loads the save unchanged. The original save is never 
 
 ## What is converted
 
-Item names and descriptions, liquids, customers, factions, news, night logs and notes. The conversion works between any two of the game's languages.
+Item names and descriptions, liquids, customers, factions, news, night logs, notes, and the names of night services and events such as Insurance Service. People's names stay as the game keeps them. The conversion works between any two of the game's languages.
 
 ## Limits
 
 - Text added by other mods is not converted. Only the game's own string tables are used.
 - Text that is not game text, such as names you typed or custom labels, stays as written.
-- Tested against game version 0.46D.
+- The mod is built for game version 0.46D.

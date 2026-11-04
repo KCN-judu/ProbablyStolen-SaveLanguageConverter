@@ -9,79 +9,79 @@ msgstr ""
 
 #: conf.json:summary
 msgid "Converts a copy of a save started in another language to the language you play in."
-msgstr "把用其他语言开始的存档转换成一个副本，换成你现在使用的语言。"
+msgstr "把用其他语言开始的存档复制一份，转换成你现在玩的语言。"
 
 #: manual/building.md:1
 msgid "Building"
 msgstr "构建"
 
-#: manual/building.md:4
+#: manual/building.md:3
 msgid "Requirements"
-msgstr "需求"
+msgstr "环境要求"
+
+#: manual/building.md:5
+msgid "*Probably Stolen*, game version 0.46D. The build compiles against the game's own assemblies in `Probably Stolen_Data/Managed`."
+msgstr "游戏《深空当铺：可能是偷的》（*Probably Stolen*）0.46D 版。构建时会引用 `Probably Stolen_Data/Managed` 里的游戏程序集。"
 
 #: manual/building.md:6
-msgid "*Probably Stolen*, game version 0.46D. The build compiles against the game's own assemblies in `Probably Stolen_Data/Managed`."
-msgstr "《深空当铺：可能是偷的》（*Probably Stolen*）游戏版本 0.46D。构建时会引用 `Probably Stolen_Data/Managed` 中的游戏程序集。"
-
-#: manual/building.md:7
 msgid "Git Bash or another POSIX shell on Windows."
 msgstr "Windows 上的 Git Bash 或其他 POSIX shell。"
 
-#: manual/building.md:8
+#: manual/building.md:7
 msgid "Nothing else: the C# 5 compiler that ships with Windows (.NET Framework 4) is enough."
-msgstr "不需要其他东西：Windows 自带的 C# 5 编译器（.NET Framework 4）就够了。"
+msgstr "不需要别的：Windows 自带的 C# 5 编译器（.NET Framework 4）就够了。"
 
-#: manual/building.md:10
+#: manual/building.md:9
 msgid "Build"
 msgstr "构建"
 
-#: manual/building.md:17
+#: manual/building.md:16
 msgid "Two environment variables override the defaults:"
-msgstr "可以用两个环境变量覆盖默认值："
+msgstr "两个环境变量可以改默认值："
 
-#: manual/building.md:19
+#: manual/building.md:18
 msgid "Variable"
 msgstr "变量"
 
-#: manual/building.md:19
+#: manual/building.md:18
 msgid "Default"
 msgstr "默认值"
 
-#: manual/building.md:24
+#: manual/building.md:23
 msgid "Checks"
 msgstr "检查"
 
-#: manual/building.md:30
-msgid "It runs the engine's checks headless, and the game's mod scanner on the build when the game is installed."
-msgstr "它在无界面的环境中运行引擎的检查；如果装了游戏，还会对构建结果运行游戏自带的模组扫描器。"
+#: manual/building.md:29
+msgid "It runs the engine's checks headless. When the game is installed and `./build.sh` has run, it also runs the game's mod scanner on the build."
+msgstr "它在没有游戏界面的环境里运行引擎的检查。如果装了游戏，并且已经运行过 `./build.sh`，还会用游戏自带的模组扫描器检查构建结果。"
 
-#: manual/building.md:32
+#: manual/building.md:31
 msgid "Install by hand"
 msgstr "手动安装"
 
-#: manual/building.md:34
+#: manual/building.md:33
 msgid "Copy the folder `out/save_language_converter` into the game's `Mods` folder, start the game, and enable the mod in the Mods menu. Mods load when the game starts, so restart after enabling or updating one."
-msgstr "把 `out/save_language_converter` 文件夹复制到游戏的 `Mods` 文件夹，启动游戏，在模组菜单中启用它。模组在游戏启动时加载，所以启用或更新后要重启游戏。"
+msgstr "把 `out/save_language_converter` 文件夹复制到游戏的 `Mods` 文件夹，启动游戏，在模组菜单里启用它。模组在游戏启动时加载，所以启用或更新后要重启游戏。"
 
-#: manual/building.md:36
+#: manual/building.md:35
 msgid "The mod declares no capabilities, so the game enables it without a permission prompt."
-msgstr "这个模组不声明任何权限，游戏启用它时不会弹出权限确认。"
+msgstr "这个模组不申请任何权限，游戏启用它时不会弹出权限确认。"
 
-#: manual/building.md:38
+#: manual/building.md:37
 msgid "Regenerating the type list"
 msgstr "重新生成类型列表"
 
-#: manual/building.md:40
-msgid "`src/KnownTypes.g.cs` lists the save classes the walker visits. Regenerate it with `tools/Closure.cs` after a game update that changes save classes."
-msgstr "`src/KnownTypes.g.cs` 列出遍历器会访问的存档类。游戏更新改变了存档类时，用 `tools/Closure.cs` 重新生成它。"
+#: manual/building.md:39
+msgid "`src/KnownTypes.g.cs` lists the save classes the walker visits. Regenerate it with `tools/Closure.cs` after a game update that changes save classes. The tool reads the game's `Assembly-CSharp.dll` and writes the list: `Closure.exe <Assembly-CSharp.dll> src/KnownTypes.g.cs`."
+msgstr "`src/KnownTypes.g.cs` 列出了遍历器会访问的存档类。游戏更新改动了存档类之后，用 `tools/Closure.cs` 重新生成。这个工具读取游戏的 `Assembly-CSharp.dll` 并写出列表：`Closure.exe <Assembly-CSharp.dll> src/KnownTypes.g.cs`。"
 
 #: manual/how-it-works.md:1
 msgid "How it works"
-msgstr "实现原理"
+msgstr "工作原理"
 
 #: manual/how-it-works.md:3
-msgid "The mod has two parts: one decides which strings in a save are display text, and the other finds each string's entry in the game's tables and replaces it with the same entry in the target language."
-msgstr "这个模组分两部分：一部分判断存档中哪些字符串是显示文字，另一部分在游戏的字符串表中找到每个字符串对应的条目，并替换为目标语言中的同一条目。"
+msgid "The mod has two parts. One decides which strings in a save are display text. The other finds each string's entry in the game's tables and replaces it with the same entry in the target language."
+msgstr "模组分两部分。一部分判断存档里哪些字符串是显示文字，另一部分在游戏的字符串表里找到每个字符串对应的条目，换成目标语言里的同一条。"
 
 #: manual/how-it-works.md:5
 msgid "Matching text"
@@ -89,63 +89,63 @@ msgstr "文字匹配"
 
 #: manual/how-it-works.md:7
 msgid "Each source-language string is looked up in the game's string tables and replaced with the entry of the same id in the target language. The matcher handles:"
-msgstr "每个源语言字符串都会在游戏字符串表中查找，并替换为目标语言中相同 id 的条目。匹配器可以处理："
+msgstr "每个源语言字符串都会到游戏的字符串表里查找，换成目标语言中 id 相同的条目。匹配器能处理这几种情况："
 
 #: manual/how-it-works.md:9
 msgid "exact entries;"
-msgstr "完全一致的条目；"
+msgstr "与条目完全相同的文字；"
 
 #: manual/how-it-works.md:10
 msgid "smart-format templates such as `Durability: {0}/{1}`, with their arguments translated recursively;"
-msgstr "像 `Durability: {0}/{1}` 这样的格式化模板，其中的参数会递归翻译；"
+msgstr "带参数的模板，比如 `Durability: {0}/{1}`，参数会递归翻译；"
 
 #: manual/how-it-works.md:11
 msgid "text the game concatenated from several entries, such as `Music Cassette - ` + `Stardust` + ` (Corrupted)`;"
-msgstr "游戏由多个条目拼接成的文字，比如 `Music Cassette - ` + `Stardust` + ` (Corrupted)`；"
+msgstr "游戏用几个条目拼成的文字，比如 `Music Cassette - ` + `Stardust` + ` (Corrupted)`；"
 
 #: manual/how-it-works.md:12
 msgid "multi-line notes built from several entries;"
-msgstr "由多个条目组成的多行笔记；"
+msgstr "由几个条目组成的多行笔记；"
 
 #: manual/how-it-works.md:13
 msgid "fixed suffixes the game appends, such as `(99%-99.9% Purity)`."
-msgstr "游戏附加的固定后缀，比如 `(99%-99.9% Purity)`。"
+msgstr "游戏在后面附加的固定后缀，比如 `(99%-99.9% Purity)`。"
 
 #: manual/how-it-works.md:15
-msgid "When several entries share a source string, the entry whose key shares words with the ids next to the text wins. For example `plant_trait_unappetizing_name` wins next to `category: plant_taste`. After that, the more central table wins, then the most common translation."
-msgstr "当多个条目的源字符串相同时，键名与文字附近 id 有共同词的条目优先。例如在 `category: plant_taste` 旁边，`plant_trait_unappetizing_name` 胜出。其次是更核心的字符串表优先，最后是最常见的译法优先。"
+msgid "When several entries share a source string, the entry whose key shares words with the ids next to the text wins. For example `plant_trait_unappetizing_name` wins next to `category: plant_taste`. Entries whose key says `plural` lose. After that, the more central table wins, then the most common translation, then the shorter text."
+msgstr "几个条目的源字符串相同时，优先选键名与文字旁边的 id 有共同单词的那个。比如在 `category: plant_taste` 旁边，选 `plant_trait_unappetizing_name`。键名带 `plural` 的条目排在后面。再往后依次看：所在的表是否更核心，译法是否最常见，文字是否更短。"
 
 #: manual/how-it-works.md:17
 msgid "The matcher lives in `src/Translator.Pure.cs`."
-msgstr "匹配器位于 `src/Translator.Pure.cs`。"
+msgstr "匹配器在 `src/Translator.Pure.cs` 里。"
 
 #: manual/how-it-works.md:19
 msgid "Choosing what to convert"
-msgstr "决定转换哪些内容"
+msgstr "哪些内容会被转换"
 
 #: manual/how-it-works.md:21
-msgid "`src/SaveWalker.cs` decides what is display text. Non-ASCII text is converted in any field that is not an id. ASCII text is converted only in fields the game is known to localize. The allow-list was found by comparing a Chinese save with the tables. Fields such as `subtitle` hold English even in a Chinese save, so they are internal names and stay unchanged. A few fields, such as `displayName`, hold both: people's names, which the game keeps in English, and the names of night services and events, which it shows in the player's language. There English text is replaced only when it is exactly one game entry and not a person's name; a person is recognised by the `name_` id stored with it."
-msgstr "`src/SaveWalker.cs` 判断什么是显示文字。非 ASCII 文字只要不在 id 字段里都会转换；ASCII 文字只在已知会被游戏本地化的字段中转换。这份允许列表是通过把中文存档与字符串表对比得到的。像 `subtitle` 这样的字段即使在中文存档里也是英文，说明它们是内部名称，保持不变。少数字段（例如 `displayName`）两者都有：人物名字，游戏会保持英文；夜间服务和事件的名称，游戏会显示为玩家的语言。在这些字段里，只有当英文文字恰好是一个游戏条目、并且不是人物名字时才会替换；人物通过和它一起保存的 `name_` 标识来识别。"
+msgid "`src/SaveWalker.cs` walks the save and hands every string to `src/TextPolicy.Pure.cs`, which decides what is display text. Non-ASCII text is converted in any field that is not an id or a known internal field such as a file name or a seed. ASCII text is converted only in fields the game is known to localize. The allow-list was found by comparing a Chinese save with the tables. Fields such as `subtitle` hold English even in a Chinese save. They are internal names and stay unchanged. A few fields, such as `displayName`, hold two kinds of text. People's names stay in English in the game. The names of night services and events appear in the player's language. In these fields English text is replaced only when it is exactly one game entry and not a person's name. A person is recognised by the `name_` id stored next to the name."
+msgstr "`src/SaveWalker.cs` 遍历存档，把每个字符串交给 `src/TextPolicy.Pure.cs`，由它判断是不是显示文字。只要字段不是 id，也不是文件名、随机种子这类已知的内部字段，非 ASCII 文字就会转换。ASCII 文字只在游戏会本地化的已知字段里转换。这份字段清单是拿一个中文存档与字符串表对照得出的。像 `subtitle` 这样的字段，在中文存档里存的也是英文，它们是内部名称，保持不变。少数字段（比如 `displayName`）里有两种文字：人物的名字，游戏里一直是英文；夜间服务和事件的名称，游戏里显示玩家所选的语言。在这些字段里，只有英文文字恰好等于一个游戏条目、又不是人物名字时才会替换。存档里名字旁边有 `name_` 开头的 id，就说明它是人物。"
 
 #: manual/how-it-works.md:23
 msgid "The save classes the walker may visit are listed in `src/KnownTypes.g.cs`, generated by `tools/Closure.cs` from the game DLL."
-msgstr "遍历器可以访问的存档类列在 `src/KnownTypes.g.cs` 中，由 `tools/Closure.cs` 从游戏 DLL 生成。"
+msgstr "遍历器可以访问的存档类列在 `src/KnownTypes.g.cs` 里，由 `tools/Closure.cs` 从游戏的 DLL 生成。"
 
 #: manual/how-it-works.md:25
 msgid "Performance"
 msgstr "性能"
 
 #: manual/how-it-works.md:27
-msgid "How each step grows with the size of a save, and what the optimizations changed. L is the length of the save text, S the number of strings in it, E the number of strings that change, and T the number of templates in the source language (693 for English)."
-msgstr "各个步骤的开销如何随存档大小增长，以及优化改变了什么。L 是存档文本的长度，S 是其中字符串的数量，E 是要改动的字符串数量，T 是源语言中模板的数量（英文为 693 个）。"
+msgid "How each step grows with the size of a save, and what the speedups changed. L is the length of the save text, S the number of strings in it, E the number of strings that change, and T the number of templates in the source language (693 for English)."
+msgstr "下面说明每一步的开销怎样随存档变大而增长，以及几次提速改了什么。L 是存档文本的长度，S 是其中字符串的数量，E 是要改的字符串数量，T 是源语言的模板数量（英文有 693 个）。"
 
 #: manual/how-it-works.md:29
-msgid "Rewriting the save. The rewriter used to replace each changed string in place in one buffer. Every replacement shifted the rest of the save, so a conversion cost O(E·L). It now records the replacements during a single walk and then copies the save once, the unchanged slices and the replacements in order, which costs O(L + E). On a 13 MB save with about 4,200 changes the rewrite went from about 3 s to 0.35 s, and the output is byte for byte the same. In the game a whole conversion, building the tables included, takes about 0.55 s."
-msgstr "改写存档。改写器原先在同一个缓冲区里就地替换每个改动的字符串，每次替换都要把存档其余部分整体挪动一次，所以一次转换的开销是 O(E·L)。现在它在一次遍历中记下所有替换，然后把存档复制一遍，按顺序拼接未改动的片段和替换内容，开销为 O(L + E)。在一个约 4,200 处改动的 13 MB 存档上，改写从约 3 秒降到 0.35 秒，输出逐字节相同。在游戏里，一次完整转换（含建表）约需 0.55 秒。"
+msgid "Rewriting the save. The rewriter used to replace each changed string in place in one buffer. Every replacement shifted the rest of the save, so a conversion cost O(E·L). It now records the replacements during one walk, then copies the save once: the unchanged slices and the replacements, in order. That costs O(L + E). On a 13 MB save with about 4,200 changes the rewrite went from about 3 s to 0.35 s, and the output is byte for byte the same. In the game a whole conversion, building the tables included, takes about 0.55 s."
+msgstr "改写存档。以前，改写器在同一块缓冲区里原地替换每个要改的字符串。每替换一处，存档后面的内容都要整体挪动一次，所以一次转换的开销是 O(E·L)。现在它在一次遍历中记下所有替换，再把存档复制一遍：按顺序拼上没改的片段和替换后的文字。开销是 O(L + E)。在一个 13 MB、约 4,200 处改动的存档上，改写从约 3 秒降到 0.35 秒，输出逐字节相同。游戏里完整转换一次（包括建表）约 0.55 秒。"
 
 #: manual/how-it-works.md:31
 msgid "Deciding which fields hold ids. The answer for a field name is worked out once and remembered, so each string costs one hash lookup instead of running the rules again."
-msgstr "判断哪些字段存的是 id。每个字段名的结论只计算一次并记住，所以每个字符串只需一次哈希查找，不必再把规则跑一遍。"
+msgstr "判断哪些字段存的是 id。每个字段名只算一次，结果记下来，所以每个字符串只需一次哈希查找，不用再把规则跑一遍。"
 
 #: manual/how-it-works.md:33
 msgid "Matching one string of length n:"
@@ -153,59 +153,59 @@ msgstr "匹配一个长度为 n 的字符串："
 
 #: manual/how-it-works.md:35
 msgid "An exact entry is one hash lookup, O(n)."
-msgstr "完全匹配的条目只需一次哈希查找，O(n)。"
+msgstr "与条目完全相同的文字，一次哈希查找，O(n)。"
 
 #: manual/how-it-works.md:36
 msgid "Text without nearby context is remembered after its first match, so each distinct text is matched once per conversion."
-msgstr "没有附近上下文的文字在第一次匹配后会被记住，所以每种不同的文字在一次转换中只匹配一次。"
+msgstr "旁边没有上下文 id 的文字，第一次匹配后就记下结果，所以同一段文字在一次转换里只匹配一次。"
 
 #: manual/how-it-works.md:37
 msgid "Templates are tried one after another, O(T·n) at worst. A template whose fixed text does not occur in the string is skipped before its pattern runs, so most are ruled out by one substring search."
-msgstr "模板逐个尝试，最坏 O(T·n)。如果模板的固定文字不在字符串中出现，就在运行其匹配模式之前跳过，所以大多数模板只需一次子串查找就能排除。"
+msgstr "模板逐个尝试，最坏 O(T·n)。模板里的固定文字没有出现在字符串中时，会在运行匹配模式之前跳过，所以大多数模板只做一次子串查找就排除了。"
 
 #: manual/how-it-works.md:38
-msgid "Text concatenated from several entries is split by a shortest segmentation over pieces of up to 80 characters. That is O(80·n) dictionary lookups, and it is only tried for strings of up to 160 characters."
-msgstr "由多个条目拼接而成的文字，用最短切分拆成长度不超过 80 个字符的片段，需要 O(80·n) 次字典查找，并且只对不超过 160 个字符的字符串尝试。"
+msgid "Text concatenated from several entries is split by a shortest segmentation over pieces of up to 80 characters. That is O(80·n) dictionary lookups. It is only tried for strings of up to 160 characters, and the result may use at most 6 entries."
+msgstr "几个条目拼成的文字，按最短切分拆成不超过 80 个字符的片段，需要 O(80·n) 次字典查找。只有不超过 160 个字符的字符串才会尝试，结果最多用 6 个条目。"
 
 #: manual/how-it-works.md:39
 msgid "Multi-line text tries runs of consecutive lines, O(m²) lookups for m lines."
-msgstr "多行文字尝试连续若干行的组合，m 行需要 O(m²) 次查找。"
+msgstr "多行文字会尝试连续几行的各种组合，m 行需要 O(m²) 次查找。"
 
 #: manual/how-it-works.md:41
 msgid "Tests"
 msgstr "测试"
 
 #: manual/how-it-works.md:43
-msgid "The engine is kept apart from the game and Unity in `src/*.Pure.cs`, which use nothing but plain C#: the matcher in `Translator.Pure.cs` and the save rewriter in `JsonText.Pure.cs`. The code that talks to the game only reads the string tables and the loaded save and passes them on."
-msgstr "引擎与游戏和 Unity 分开，放在 `src/*.Pure.cs` 中，只使用纯 C#：匹配器在 `Translator.Pure.cs`，存档改写器在 `JsonText.Pure.cs`。与游戏交互的代码只负责读取字符串表和已载入的存档，再交给引擎处理。"
+msgid "The engine is kept apart from the game and Unity in `src/*.Pure.cs`, which use nothing but plain C#: the matcher in `Translator.Pure.cs`, the field rules in `TextPolicy.Pure.cs` and the save rewriter in `JsonText.Pure.cs`. The code that talks to the game only reads the string tables and the loaded save and passes them on."
+msgstr "引擎与游戏、Unity 分开，放在 `src/*.Pure.cs` 里，只用纯 C#：`Translator.Pure.cs` 是匹配器，`TextPolicy.Pure.cs` 是字段规则，`JsonText.Pure.cs` 是存档改写器。与游戏打交道的代码只负责读字符串表和已载入的存档，再交给引擎。"
 
 #: manual/how-it-works.md:45
 msgid "`tests/run.sh` runs `tests/PureTest.cs`, which checks the engine on hand-made table entries without the game, Unity or a save: exact entries, templates and their arguments, choosing between entries that share a source string, untranslated text, and rewriting JSON in place. With the game installed it also runs the mod scanner."
-msgstr "`tests/run.sh` 运行 `tests/PureTest.cs`，用手工编写的表项检验引擎，不需要游戏、Unity 或存档：精确条目、模板及其参数、在共用同一原文的条目之间选择、未翻译的文字，以及原地改写 JSON。装了游戏时，它还会运行模组扫描器。"
+msgstr "`tests/run.sh` 运行 `tests/PureTest.cs`。它用手写的表项检查引擎，不需要游戏、Unity 或存档，检查的内容有：完全相同的条目、模板及其参数、原文相同的条目之间怎么选、未翻译的文字、原地改写 JSON。装了游戏时，它还会运行模组扫描器。"
 
 #: manual/how-it-works.md:47
-msgid "`tests/EngineTest.cs` runs the engine outside the game, on string tables exported from the game's bundles and on a real save. For the Chinese save it was developed with:"
-msgstr "`tests/EngineTest.cs` 在游戏之外运行转换引擎，使用从游戏资源包导出的字符串表和一个真实存档。对开发时使用的中文存档："
+msgid "`tests/EngineTest.cs` runs the engine outside the game, on string tables exported from the game's bundles and on a real save. For the Chinese save the engine was developed with:"
+msgstr "`tests/EngineTest.cs` 在游戏之外运行引擎，用的是从游戏资源包导出的字符串表和一个真实存档。开发时用的中文存档的结果如下："
 
 #: manual/how-it-works.md:49
 msgid "Chinese to English: 492 of 492 distinct texts match a hand-checked conversion, and 60,719 of 60,721 strings in the whole save are identical. The 2 differences are intentional: sprite bookkeeping is left alone, and `startLocale` is set by the mod."
-msgstr "中文转英文：492 条不同文字全部与人工核对的结果一致，整个存档 60,721 个字符串中有 60,719 个完全相同。剩下 2 处差异是有意为之：贴图记录保持不动，`startLocale` 由模组设置。"
+msgstr "中文转英文：492 条不同的文字都与人工核对过的转换一致；整个存档 60,721 个字符串里，60,719 个完全相同。另外 2 处不同是有意的：精灵图的记录不动，`startLocale` 由模组设置。"
 
 #: manual/how-it-works.md:50
 msgid "English to Chinese: no Chinese text is lost. The differences are one-to-many cases, where one English line has several Chinese ones, and English names the game also keeps in Chinese saves."
-msgstr "英文转中文：没有丢失任何中文。差异都是一对多的情况（一句英文对应多句中文），以及游戏在中文存档里也保留的英文名称。"
+msgstr "英文转中文：没有丢失中文。不同之处有两类：一条英文对应多条中文的情况，以及游戏在中文存档里也保留英文的名称。"
 
 #: manual/how-it-works.md:52
 msgid "`tests/ScanTest.cs` runs the game's own mod scanner on the built DLL. The result is no capabilities and not refused."
-msgstr "`tests/ScanTest.cs` 用游戏自己的模组扫描器检查构建好的 DLL，结果是不需要任何权限，也没有被拒绝。"
+msgstr "`tests/ScanTest.cs` 用游戏自带的模组扫描器检查构建出的 DLL。结果是不需要任何权限，也没有被拒绝。"
 
 #: manual/index.md:1
 msgid "Save Language Converter"
 msgstr "存档语言转换"
 
 #: manual/index.md:3
-msgid "Started a save in one language and now play in another? Item names, customers, news and logs stay in the old language. This mod converts a copy of the save to the language you play in, using the game's own translations."
-msgstr "用一种语言开始的存档，现在换了另一种语言玩？物品名称、顾客、新闻和日志都还是旧语言。这个模组用游戏自带的译文，把存档的一个副本转换成你现在使用的语言。"
+msgid "If you started a save in one language and now play in another, item names, customers, news and logs stay in the old language. This mod converts a copy of the save to the language you play in, using the game's own translations."
+msgstr "用一种语言开的存档，换成另一种语言再玩时，物品名、顾客、新闻和日志还是旧语言。这个模组把存档复制一份，用游戏自带的译文把副本转换成你现在玩的语言。"
 
 #: manual/index.md:5
 msgid "![Save Language Converter cover](../attachments/cover.png)"
@@ -217,39 +217,39 @@ msgstr "使用方法"
 
 #: manual/index.md:9
 msgid "Load a save that was started in another language. The game warns that some text may display incorrectly."
-msgstr "读取一个用其他语言开始的存档。游戏会提示部分文字可能显示不正确。"
+msgstr "读取一个用其他语言开始的存档。游戏会警告部分文字可能显示不正确。"
 
 #: manual/index.md:10
 msgid "The warning now has a third button, **Convert a copy**."
-msgstr "提示框里多了第三个按钮：**转换副本**（**Convert a copy**）。"
+msgstr "警告框里多了第三个按钮：**转换副本**（Convert a copy）。"
 
 #: manual/index.md:11
 msgid "The save is duplicated with the game's own slot copy, all earlier days included, and the copy is loaded."
-msgstr "用游戏自带的存档复制功能复制这个存档（包括之前的所有天数），然后读取副本。"
+msgstr "模组用游戏自带的存档复制功能复制存档，之前的所有天数一并复制，然后读取副本。"
 
 #: manual/index.md:12
 msgid "Right after the game reads the copy, and before inventories are rebuilt, every piece of text the game wrote in the old language is switched to the current one."
-msgstr "游戏读入副本之后、重建库存之前，所有用旧语言写入的文字都会换成当前语言。"
+msgstr "游戏读完副本、重建库存之前，所有用旧语言写下的文字都会换成当前语言。"
 
 #: manual/index.md:13
 msgid "The game's next normal save writes the converted text. Earlier days of the copy are converted the same way when you load them."
-msgstr "游戏下一次正常存档时会写入转换后的文字。副本中更早的天数在读取时也会以同样方式转换。"
+msgstr "游戏下一次正常存档时，会写入转换后的文字。副本里更早的天数，读取时同样会转换。"
 
 #: manual/index.md:15
 msgid "If you changed the language since starting the game, the copy is made but not loaded, and a message asks you to restart the game first. The game fixes some text, such as the water qualities customers ask for, in the language it started in and keeps it until a restart, so a copy loaded right away would mix the two languages. After the restart, load the copy: it is converted then."
-msgstr "如果你在游戏启动后更改过语言，副本会被创建但不会被读取，并会提示你先重启游戏。游戏会把部分文字（例如顾客想要的水质）固定为启动时的语言，直到重启才更新，所以立即读取的副本会混用两种语言。重启后再读取副本，它会在那时被转换。"
+msgstr "如果你在游戏运行期间改过语言，模组会复制存档，但不读取副本，并提示你先重启游戏。游戏会把一部分文字（比如顾客想要的水质）固定成启动时的语言，直到重启才更新。这时马上读取副本，两种语言会混在一起。重启后再读取副本，就会转换了。"
 
 #: manual/index.md:17
 msgid "Choosing **Confirm** still loads the save unchanged. The original save is never modified."
-msgstr "选择 **确认** 仍会原样读取存档。原存档永远不会被修改。"
+msgstr "点 **确认** 仍会原样读取存档。原存档不会被修改。"
 
 #: manual/index.md:19
 msgid "What is converted"
-msgstr "转换的内容"
+msgstr "转换哪些内容"
 
 #: manual/index.md:21
-msgid "Item names and descriptions, liquids, customers, factions, news, night logs and notes. The conversion works between any two of the game's languages."
-msgstr "物品名称和描述、液体、顾客、派系、新闻、夜间日志和笔记。转换适用于游戏支持的任意两种语言之间。"
+msgid "Item names and descriptions, liquids, customers, factions, news, night logs, notes, and the names of night services and events such as Insurance Service. People's names stay as the game keeps them. The conversion works between any two of the game's languages."
+msgstr "物品名称和描述、液体、顾客、派系、新闻、夜间日志、笔记，以及夜间服务和事件的名称，比如保险服务。人物名字保持游戏里的样子。游戏支持的任意两种语言之间都能转换。"
 
 #: manual/index.md:23
 msgid "Limits"
@@ -257,12 +257,15 @@ msgstr "限制"
 
 #: manual/index.md:25
 msgid "Text added by other mods is not converted. Only the game's own string tables are used."
-msgstr "其他模组添加的文字不会被转换，只使用游戏自带的字符串表。"
+msgstr "其他模组添加的文字不会转换，只使用游戏自带的字符串表。"
 
 #: manual/index.md:26
 msgid "Text that is not game text, such as names you typed or custom labels, stays as written."
-msgstr "不属于游戏文字的内容，比如你输入的名字或自定义标签，保持原样。"
+msgstr "不是游戏文字的内容，比如你自己输入的名字或自定义标签，保持原样。"
 
 #: manual/index.md:27
-msgid "Tested against game version 0.46D."
-msgstr "已在游戏版本 0.46D 上测试。"
+msgid "The mod is built for game version 0.46D."
+msgstr "模组针对游戏 0.46D 版构建。"
+
+#~ msgid "Tested against game version 0.46D."
+#~ msgstr "已在游戏版本 0.46D 上测试。"

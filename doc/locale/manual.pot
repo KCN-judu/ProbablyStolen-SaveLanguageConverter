@@ -15,64 +15,64 @@ msgstr ""
 msgid "Building"
 msgstr ""
 
-#: manual/building.md:4
+#: manual/building.md:3
 msgid "Requirements"
 msgstr ""
 
-#: manual/building.md:6
+#: manual/building.md:5
 msgid "*Probably Stolen*, game version 0.46D. The build compiles against the game's own assemblies in `Probably Stolen_Data/Managed`."
 msgstr ""
 
-#: manual/building.md:7
+#: manual/building.md:6
 msgid "Git Bash or another POSIX shell on Windows."
 msgstr ""
 
-#: manual/building.md:8
+#: manual/building.md:7
 msgid "Nothing else: the C# 5 compiler that ships with Windows (.NET Framework 4) is enough."
 msgstr ""
 
-#: manual/building.md:10
+#: manual/building.md:9
 msgid "Build"
 msgstr ""
 
-#: manual/building.md:17
+#: manual/building.md:16
 msgid "Two environment variables override the defaults:"
 msgstr ""
 
-#: manual/building.md:19
+#: manual/building.md:18
 msgid "Variable"
 msgstr ""
 
-#: manual/building.md:19
+#: manual/building.md:18
 msgid "Default"
 msgstr ""
 
-#: manual/building.md:24
+#: manual/building.md:23
 msgid "Checks"
 msgstr ""
 
-#: manual/building.md:30
-msgid "It runs the engine's checks headless, and the game's mod scanner on the build when the game is installed."
+#: manual/building.md:29
+msgid "It runs the engine's checks headless. When the game is installed and `./build.sh` has run, it also runs the game's mod scanner on the build."
 msgstr ""
 
-#: manual/building.md:32
+#: manual/building.md:31
 msgid "Install by hand"
 msgstr ""
 
-#: manual/building.md:34
+#: manual/building.md:33
 msgid "Copy the folder `out/save_language_converter` into the game's `Mods` folder, start the game, and enable the mod in the Mods menu. Mods load when the game starts, so restart after enabling or updating one."
 msgstr ""
 
-#: manual/building.md:36
+#: manual/building.md:35
 msgid "The mod declares no capabilities, so the game enables it without a permission prompt."
 msgstr ""
 
-#: manual/building.md:38
+#: manual/building.md:37
 msgid "Regenerating the type list"
 msgstr ""
 
-#: manual/building.md:40
-msgid "`src/KnownTypes.g.cs` lists the save classes the walker visits. Regenerate it with `tools/Closure.cs` after a game update that changes save classes."
+#: manual/building.md:39
+msgid "`src/KnownTypes.g.cs` lists the save classes the walker visits. Regenerate it with `tools/Closure.cs` after a game update that changes save classes. The tool reads the game's `Assembly-CSharp.dll` and writes the list: `Closure.exe <Assembly-CSharp.dll> src/KnownTypes.g.cs`."
 msgstr ""
 
 #: manual/how-it-works.md:1
@@ -80,7 +80,7 @@ msgid "How it works"
 msgstr ""
 
 #: manual/how-it-works.md:3
-msgid "The mod has two parts: one decides which strings in a save are display text, and the other finds each string's entry in the game's tables and replaces it with the same entry in the target language."
+msgid "The mod has two parts. One decides which strings in a save are display text. The other finds each string's entry in the game's tables and replaces it with the same entry in the target language."
 msgstr ""
 
 #: manual/how-it-works.md:5
@@ -112,7 +112,7 @@ msgid "fixed suffixes the game appends, such as `(99%-99.9% Purity)`."
 msgstr ""
 
 #: manual/how-it-works.md:15
-msgid "When several entries share a source string, the entry whose key shares words with the ids next to the text wins. For example `plant_trait_unappetizing_name` wins next to `category: plant_taste`. After that, the more central table wins, then the most common translation."
+msgid "When several entries share a source string, the entry whose key shares words with the ids next to the text wins. For example `plant_trait_unappetizing_name` wins next to `category: plant_taste`. Entries whose key says `plural` lose. After that, the more central table wins, then the most common translation, then the shorter text."
 msgstr ""
 
 #: manual/how-it-works.md:17
@@ -124,7 +124,7 @@ msgid "Choosing what to convert"
 msgstr ""
 
 #: manual/how-it-works.md:21
-msgid "`src/SaveWalker.cs` decides what is display text. Non-ASCII text is converted in any field that is not an id. ASCII text is converted only in fields the game is known to localize. The allow-list was found by comparing a Chinese save with the tables. Fields such as `subtitle` hold English even in a Chinese save, so they are internal names and stay unchanged. A few fields, such as `displayName`, hold both: people's names, which the game keeps in English, and the names of night services and events, which it shows in the player's language. There English text is replaced only when it is exactly one game entry and not a person's name; a person is recognised by the `name_` id stored with it."
+msgid "`src/SaveWalker.cs` walks the save and hands every string to `src/TextPolicy.Pure.cs`, which decides what is display text. Non-ASCII text is converted in any field that is not an id or a known internal field such as a file name or a seed. ASCII text is converted only in fields the game is known to localize. The allow-list was found by comparing a Chinese save with the tables. Fields such as `subtitle` hold English even in a Chinese save. They are internal names and stay unchanged. A few fields, such as `displayName`, hold two kinds of text. People's names stay in English in the game. The names of night services and events appear in the player's language. In these fields English text is replaced only when it is exactly one game entry and not a person's name. A person is recognised by the `name_` id stored next to the name."
 msgstr ""
 
 #: manual/how-it-works.md:23
@@ -136,11 +136,11 @@ msgid "Performance"
 msgstr ""
 
 #: manual/how-it-works.md:27
-msgid "How each step grows with the size of a save, and what the optimizations changed. L is the length of the save text, S the number of strings in it, E the number of strings that change, and T the number of templates in the source language (693 for English)."
+msgid "How each step grows with the size of a save, and what the speedups changed. L is the length of the save text, S the number of strings in it, E the number of strings that change, and T the number of templates in the source language (693 for English)."
 msgstr ""
 
 #: manual/how-it-works.md:29
-msgid "Rewriting the save. The rewriter used to replace each changed string in place in one buffer. Every replacement shifted the rest of the save, so a conversion cost O(E·L). It now records the replacements during a single walk and then copies the save once, the unchanged slices and the replacements in order, which costs O(L + E). On a 13 MB save with about 4,200 changes the rewrite went from about 3 s to 0.35 s, and the output is byte for byte the same. In the game a whole conversion, building the tables included, takes about 0.55 s."
+msgid "Rewriting the save. The rewriter used to replace each changed string in place in one buffer. Every replacement shifted the rest of the save, so a conversion cost O(E·L). It now records the replacements during one walk, then copies the save once: the unchanged slices and the replacements, in order. That costs O(L + E). On a 13 MB save with about 4,200 changes the rewrite went from about 3 s to 0.35 s, and the output is byte for byte the same. In the game a whole conversion, building the tables included, takes about 0.55 s."
 msgstr ""
 
 #: manual/how-it-works.md:31
@@ -164,7 +164,7 @@ msgid "Templates are tried one after another, O(T·n) at worst. A template whose
 msgstr ""
 
 #: manual/how-it-works.md:38
-msgid "Text concatenated from several entries is split by a shortest segmentation over pieces of up to 80 characters. That is O(80·n) dictionary lookups, and it is only tried for strings of up to 160 characters."
+msgid "Text concatenated from several entries is split by a shortest segmentation over pieces of up to 80 characters. That is O(80·n) dictionary lookups. It is only tried for strings of up to 160 characters, and the result may use at most 6 entries."
 msgstr ""
 
 #: manual/how-it-works.md:39
@@ -176,7 +176,7 @@ msgid "Tests"
 msgstr ""
 
 #: manual/how-it-works.md:43
-msgid "The engine is kept apart from the game and Unity in `src/*.Pure.cs`, which use nothing but plain C#: the matcher in `Translator.Pure.cs` and the save rewriter in `JsonText.Pure.cs`. The code that talks to the game only reads the string tables and the loaded save and passes them on."
+msgid "The engine is kept apart from the game and Unity in `src/*.Pure.cs`, which use nothing but plain C#: the matcher in `Translator.Pure.cs`, the field rules in `TextPolicy.Pure.cs` and the save rewriter in `JsonText.Pure.cs`. The code that talks to the game only reads the string tables and the loaded save and passes them on."
 msgstr ""
 
 #: manual/how-it-works.md:45
@@ -184,7 +184,7 @@ msgid "`tests/run.sh` runs `tests/PureTest.cs`, which checks the engine on hand-
 msgstr ""
 
 #: manual/how-it-works.md:47
-msgid "`tests/EngineTest.cs` runs the engine outside the game, on string tables exported from the game's bundles and on a real save. For the Chinese save it was developed with:"
+msgid "`tests/EngineTest.cs` runs the engine outside the game, on string tables exported from the game's bundles and on a real save. For the Chinese save the engine was developed with:"
 msgstr ""
 
 #: manual/how-it-works.md:49
@@ -204,7 +204,7 @@ msgid "Save Language Converter"
 msgstr ""
 
 #: manual/index.md:3
-msgid "Started a save in one language and now play in another? Item names, customers, news and logs stay in the old language. This mod converts a copy of the save to the language you play in, using the game's own translations."
+msgid "If you started a save in one language and now play in another, item names, customers, news and logs stay in the old language. This mod converts a copy of the save to the language you play in, using the game's own translations."
 msgstr ""
 
 #: manual/index.md:5
@@ -248,7 +248,7 @@ msgid "What is converted"
 msgstr ""
 
 #: manual/index.md:21
-msgid "Item names and descriptions, liquids, customers, factions, news, night logs and notes. The conversion works between any two of the game's languages."
+msgid "Item names and descriptions, liquids, customers, factions, news, night logs, notes, and the names of night services and events such as Insurance Service. People's names stay as the game keeps them. The conversion works between any two of the game's languages."
 msgstr ""
 
 #: manual/index.md:23
@@ -264,5 +264,5 @@ msgid "Text that is not game text, such as names you typed or custom labels, sta
 msgstr ""
 
 #: manual/index.md:27
-msgid "Tested against game version 0.46D."
+msgid "The mod is built for game version 0.46D."
 msgstr ""

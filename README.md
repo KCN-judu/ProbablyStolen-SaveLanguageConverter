@@ -2,7 +2,7 @@
 
 ![Save Language Converter](preview.png)
 
-A mod for *Probably Stolen*. Converts a copy of a save started in another language to the language you play in. Item names, descriptions, customers, news and logs are switched using the game's own translations, and the original save is never touched.
+A mod for *Probably Stolen*. It converts a copy of a save started in another language to the language you play in, using the game's own translations. Item names, descriptions, customers, news and logs change. The original save is never touched.
 
 **Documentation:** <https://kcn-judu.github.io/ProbablyStolen-Mods/en/save-language-converter/> ([简体中文](https://kcn-judu.github.io/ProbablyStolen-Mods/zh-cn/save-language-converter/))
 
@@ -25,7 +25,10 @@ See [Building](doc/manual/building.md) for the requirements and the `GAME` and `
 
 | Path | Contents |
 | --- | --- |
-| `src/` | The mod's source |
+| `src/` | The mod's source; `*.Pure.cs` files hold the decisions that tests/ check without the game |
+| `Localization/` | The mod's own texts (button, messages, language names) in every language the game supports |
+| `tests/` | Headless tests of the engine, and the scanner check |
+| `tools/` | Programs that read the game's DLL; `Closure.cs` generates `src/KnownTypes.g.cs` |
 | `doc/manual/` | Documentation, in English (the source of every translation) |
 | `doc/locale/` | Translations of the documentation, as gettext catalogs |
 | `manifest.xml`, `preview.png` | What the game reads, next to the DLL |

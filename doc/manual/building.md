@@ -1,6 +1,5 @@
 # Building
 
-
 ## Requirements
 
 - *Probably Stolen*, game version 0.46D. The build compiles against the game's own assemblies in `Probably Stolen_Data/Managed`.
@@ -27,7 +26,7 @@ Two environment variables override the defaults:
 tests/run.sh
 ```
 
-It runs the engine's checks headless, and the game's mod scanner on the build when the game is installed.
+It runs the engine's checks headless. When the game is installed and `./build.sh` has run, it also runs the game's mod scanner on the build.
 
 ## Install by hand
 
@@ -37,4 +36,4 @@ The mod declares no capabilities, so the game enables it without a permission pr
 
 ## Regenerating the type list
 
-`src/KnownTypes.g.cs` lists the save classes the walker visits. Regenerate it with `tools/Closure.cs` after a game update that changes save classes.
+`src/KnownTypes.g.cs` lists the save classes the walker visits. Regenerate it with `tools/Closure.cs` after a game update that changes save classes. The tool reads the game's `Assembly-CSharp.dll` and writes the list: `Closure.exe <Assembly-CSharp.dll> src/KnownTypes.g.cs`.
