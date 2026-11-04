@@ -9,8 +9,13 @@ using System.Text.RegularExpressions;
 namespace SaveLanguageConverter
 {
     // Walks the loaded save (PlayerStore, StoreStation and everything they hold) through the fields listed in KnownTypes.
+    // Reads and writes game save classes by reflection, through the field lists of KnownTypes.g.cs, so it names no game type
+    // itself. Which strings change is decided by TextPolicy; this class only finds every string and writes back the result.
+    // It edits the loaded objects in place, which is why it runs before the game builds inventories from them.
     sealed class SaveWalker
     {
+        // Reference equality for the visited set: save classes may override Equals, and the walk must visit each object once
+        // even when the same object is reachable by several paths or points back to its owner.
         sealed class RefEq : IEqualityComparer<object>
         {
             public new bool Equals(object a, object b) { return ReferenceEquals(a, b); }
@@ -29,6 +34,8 @@ namespace SaveLanguageConverter
             this.known = known;
         }
 
+        // The listed fields of a type and of its base classes. KnownTypes lists DeclaredOnly fields, so the chain is followed
+        // here. Cached per type because a save holds very many objects of few types.
         List<FieldInfo> FieldsOf(Type t)
         {
             List<FieldInfo> list;
@@ -43,6 +50,10 @@ namespace SaveLanguageConverter
             return list;
         }
 
+        // Entry point and recursion. `member` is the name of the field (or the enclosing field, for items of a collection) that
+        // holds the value; `context` is the set of id tokens next to it. Strings, delegates, Unity objects and value types are
+        // leaves. Types KnownTypes does not list are not entered. It omits types without strings and the inventory classes, which a
+        // save stores as JSON text inside string fields; TextPolicy rewrites those through JsonText.
         public void Walk(object o, string member, HashSet<string> context)
         {
             if (o == null || o is string || o is Delegate || o is UnityEngine.Object) return;
@@ -57,6 +68,8 @@ namespace SaveLanguageConverter
 
             var fields = FieldsOf(t);
             if (fields.Count == 0) return;
+            // Ids stored in the same object (item ids, locIDs such as name_odin) help Translator pick the right entry when
+            // several share a source string, and tell TextPolicy whether a name belongs to a person.
             var ctx = new HashSet<string>();
             foreach (var f in fields)
             {
@@ -71,6 +84,7 @@ namespace SaveLanguageConverter
             }
         }
 
+        // One field: strings are rewritten and assigned back, collections of strings are rebuilt, anything else is walked.
         void WalkField(object owner, FieldInfo f, HashSet<string> ctx)
         {
             object v = f.GetValue(owner);
@@ -82,6 +96,7 @@ namespace SaveLanguageConverter
                 if (r != null && r != s) f.SetValue(owner, r);
                 return;
             }
+            // Collections of strings that are neither lists nor dictionaries are rebuilt in place.
             // Collections of strings that are neither lists nor dictionaries are rebuilt in place.
             var queue = v as Queue<string>;
             if (queue != null)
@@ -102,6 +117,7 @@ namespace SaveLanguageConverter
             Walk(v, f.Name, ctx);
         }
 
+        // Arrays are writable by index; other read-only lists cannot be changed and are skipped.
         void WalkList(IList list, string member, HashSet<string> context)
         {
             if (list.IsReadOnly && !(list is Array)) return;
@@ -118,6 +134,8 @@ namespace SaveLanguageConverter
             }
         }
 
+        // Values are rewritten in place. Entries are copied first and keys renamed last, because a dictionary cannot be
+        // changed while it is enumerated.
         void WalkDictionary(IDictionary dict, string member, HashSet<string> context)
         {
             var entries = new List<DictionaryEntry>();

@@ -16,6 +16,10 @@ namespace SaveLanguageConverter
     // Adds "Convert a copy" to the load dialog that warns about a save started in another language.
     // The copy is made with the game's own slot duplication; its text is translated in memory right after
     // the game reads it (before inventories are rebuilt) and written back by the game's normal save.
+    // Patches (Harmony, all on LoadGameUI): OnLoadClicked (prefix, remembers which slot was clicked), ShowDialog (postfix,
+    // adds the button when the dialog is the language warning) and HideDialog (postfix, takes the button away again).
+    // The conversion itself runs from ModHook.OnGameLoadedEarly. The decisions about what to translate live in
+    // Translator.Pure.cs and TextPolicy.Pure.cs; SaveWalker.cs applies them to the loaded save; this file only talks to the game.
     public sealed class ConvertMod : IMod
     {
         public const string ModId = "save_language_converter";
@@ -23,28 +27,39 @@ namespace SaveLanguageConverter
         const string Tag = "[SaveLanguageConverter] ";
 
         // Most central tables first: their entries win when several share a source string.
+        // Both locales' entries are read from these tables only (the tables that can put text into a save). Their index is
+        // the Translator priority, see Translator.Choose.
         static readonly string[] Tables = { "Item", "ClientName", "Mechanic", "UI", "Interactable", "NetworkUpgrade",
             "RepPerkTable", "PerkTable", "Dialogue", "PhoneDialogue", "Hint", "MainMenu", "Tutorial", "NewGame" };
 
+        // LoadGameUI's members are private or internal, so they are found by name with these flags. If a game update renames
+        // the dialog's frame field, CurrentFrame returns null and the button is simply not added.
         const BindingFlags AnyStatic = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
 
+        // The id the game gave this mod (Init), used to look up the mod's own Localization/*.csv.
         static string modId = ModId;
         static Harmony harmony;
         static bool hooked;
 
+        // The slot the player clicked in the load dialog and the two locales, set by OnLoadClickedPrefix and used by the
+        // dialog postfixes and the button. Null when the save needs no conversion. Plain data, no store objects.
         sealed class Pending { public int SlotId; public string File; public string From; public string To; }
         static Pending pending;
+        // State of the added button and of the two original buttons, so HideConvertButton can restore their layout.
+        // These are main-menu UI objects, not store objects (code_standard.md); OnDisable destroys the button.
         static NewGameCommonButton convertButton;
         static LoadGameFrame buttonFrame;
         static RectTransform confirmRoot, cancelRoot, convertRoot;
         static Vector2 confirmPos, confirmSize, cancelPos, cancelSize;
         static bool layoutChanged;
 
+        // Takes the id the game assigned to this mod, used for its Localization files.
         public void Init(ModManifest manifest)
         {
             if (manifest != null && !string.IsNullOrEmpty(manifest.ID)) modId = manifest.ID;
         }
 
+        // Creates the patches and subscribes to ModHook.OnGameLoadedEarly. Both are guarded, so a second OnEnable adds nothing twice.
         public void OnEnable()
         {
             if (harmony == null)
@@ -60,6 +75,7 @@ namespace SaveLanguageConverter
             if (!hooked) { ModHook.OnGameLoadedEarly += OnGameLoadedEarly; hooked = true; }
         }
 
+        // Undoes everything OnEnable did and removes the button, so disabling the mod leaves the dialog as the game made it.
         public void OnDisable()
         {
             if (hooked) { ModHook.OnGameLoadedEarly -= OnGameLoadedEarly; hooked = false; }
@@ -69,11 +85,13 @@ namespace SaveLanguageConverter
             convertButton = null; buttonFrame = null;
         }
 
+        // The mod's own text in the player's language (Localization/<language>.csv).
         static string L(string key, params object[] args)
         {
             return ModHelper.GetLocalized(modId, key, args);
         }
 
+        // The language's own name for the button and messages (the lang_<code> keys), else the game's locale name.
         static string LanguageName(string code)
         {
             string name = L("lang_" + code);
@@ -82,6 +100,8 @@ namespace SaveLanguageConverter
             return locale != null ? locale.LocaleName : code;
         }
 
+        // The game's Locale for a code. Falls back to a match that ignores case, "-" and "_", because a save can carry
+        // "pt-BR" where the game lists "ptBR".
         static Locale FindLocale(string code)
         {
             var locales = LocalizationSettings.AvailableLocales.Locales;
@@ -93,6 +113,8 @@ namespace SaveLanguageConverter
 
         // ---------------------------------------------------------------- load dialog
 
+        // Runs before the game handles a click on a save. Only decides; the game's own code then shows the language warning
+        // when the start locale differs, and ShowDialogPostfix adds the button to it. Both locales must exist in this game.
         static void OnLoadClickedPrefix(int slotId, string file)
         {
             pending = null;
@@ -103,6 +125,8 @@ namespace SaveLanguageConverter
             pending = new Pending { SlotId = slotId, File = file, From = preview.startLocale, To = current };
         }
 
+        // ShowDialog is also used for other messages (this mod's own included). The button is added only when the body is
+        // exactly the language warning built for the pending slot; for any other dialog it is hidden.
         static void ShowDialogPostfix(string body)
         {
             var p = pending;
@@ -118,18 +142,23 @@ namespace SaveLanguageConverter
             HideConvertButton();
         }
 
+        // LoadGameUI keeps its dialog in a private static field.
         static LoadGameFrame CurrentFrame()
         {
             var f = typeof(LoadGameUI).GetField("frame", AnyStatic);
             return f == null ? null : f.GetValue(null) as LoadGameFrame;
         }
 
+        // The ancestor of t that is a direct child of `ancestor`: the object that carries a dialog button's position and size.
         static RectTransform RootUnder(Transform t, Transform ancestor)
         {
             while (t.parent != null && t.parent != ancestor) t = t.parent;
             return t as RectTransform;
         }
 
+        // Builds the button once per dialog frame with the game's own NewGameCommonButton, next to Confirm and Cancel, and
+        // shares the width of the two original buttons among the three. The originals' layout is saved first and put back by
+        // HideConvertButton, because the same buttons serve the game's other dialogs.
         static void ShowConvertButton(Pending p)
         {
             var frame = CurrentFrame();
@@ -197,6 +226,7 @@ namespace SaveLanguageConverter
             }
         }
 
+        // Hides the added button and puts Confirm and Cancel back where the game had them.
         static void HideConvertButton()
         {
             if (convertRoot != null) convertRoot.gameObject.SetActive(false);
@@ -208,6 +238,7 @@ namespace SaveLanguageConverter
             layoutChanged = false;
         }
 
+        // Calls a private static method of LoadGameUI (HideDialog, ShowDialog, LoadSlot). Throws when the game no longer has it.
         static void InvokeLoadGameUI(string method, params object[] args)
         {
             var m = typeof(LoadGameUI).GetMethod(method, AnyStatic);
@@ -215,6 +246,9 @@ namespace SaveLanguageConverter
             m.Invoke(null, args);
         }
 
+        // The button's action: copy the slot with the game's own SaveFiles.DuplicateSlot, mark the copy as being in the
+        // current language, and load it. Nothing is translated here; the text is converted when the game loads the copy
+        // (OnGameLoadedEarly). The original slot is only read. Any failure shows a message and leaves the save as it was.
         static void OnConvertClicked()
         {
             var p = pending;
@@ -289,6 +323,8 @@ namespace SaveLanguageConverter
 
         // ---------------------------------------------------------------- in-game conversion
 
+        // ModHook.OnGameLoadedEarly: PlayerStore exists and holds the loaded save, but inventories are not built yet, so the
+        // text can be changed in place. A failure here is logged and the save loads unchanged.
         static void OnGameLoadedEarly()
         {
             try
@@ -309,6 +345,8 @@ namespace SaveLanguageConverter
             }
         }
 
+        // Pairs every entry of the source language with the same key in the target language, table by table. The tables come
+        // from the game itself, not from data shipped with the mod. A table that cannot be read is skipped with a warning.
         static Translator BuildTranslator(string from, string to)
         {
             Locale src = FindLocale(from), dst = FindLocale(to);
@@ -331,6 +369,8 @@ namespace SaveLanguageConverter
             return tr;
         }
 
+        // Rewrites the text of the loaded save. StoreStation is a separate root that the save also fills with text. Setting
+        // startLocale makes the game's next save record the new language. Texts that stay in the old script are listed in the log.
         static void Convert(PlayerStore store, string from, string to)
         {
             var watch = Stopwatch.StartNew();

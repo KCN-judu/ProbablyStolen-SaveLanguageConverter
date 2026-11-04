@@ -20,6 +20,8 @@ static class ScanTest
         return Run(a[1]);
     }
 
+    // Exit code 0 only for a mod with no capabilities, no hard flag and no refusal, which is what the game needs to enable it
+    // without asking the player. tests/run.sh checks the "capabilities: none" line.
     static int Run(string modFolder)
     {
         var dlls = new[] { Path.Combine(modFolder, "SaveLanguageConverter.dll") };

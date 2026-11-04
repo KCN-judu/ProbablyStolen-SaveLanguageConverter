@@ -8,6 +8,7 @@ M="$GAME/Probably Stolen_Data/Managed"
 CSC="${CSC:-/c/Windows/Microsoft.NET/Framework64/v4.0.30319/csc.exe}"
 mkdir -p out/save_language_converter
 
+# Reference the game's assemblies; one that is missing is left out and the compiler reports what it needed.
 refs=()
 for r in mscorlib netstandard System System.Core Assembly-CSharp Assembly-CSharp-firstpass 0Harmony \
          UnityEngine UnityEngine.CoreModule UnityEngine.UI UnityEngine.UIModule Unity.TextMeshPro \
@@ -22,6 +23,8 @@ rm -rf "$WORK" && mkdir -p "$WORK/src"
 cp src/*.cs "$WORK/src/"
 srcs=()
 for f in src/*.cs; do srcs+=("src\\$(basename "$f")"); done
+# -nostdlib and -noconfig: compile against the game's mscorlib and netstandard, not the framework's.
+# 1701 and 1702 are the compiler's warnings about assembly references and are silenced.
 ( cd "$WORK" && "$CSC" -nologo -nostdlib -noconfig -target:library -optimize+ -warn:4 -nowarn:1701,1702 \
   "${refs[@]}" '-out:SaveLanguageConverter.dll' "${srcs[@]}" )
 cp "$WORK/SaveLanguageConverter.dll" out/save_language_converter/

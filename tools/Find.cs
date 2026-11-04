@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Mono.Cecil;
 
+// Searches the IL of every method of a DLL for an instruction matching a regex, for example every caller of a game method.
+// Shares its build recipe with Inspect.cs (see modding_tools.md in the collection repository).
 class Find
 {
     static void Main(string[] a)

@@ -7,16 +7,22 @@ namespace SaveLanguageConverter
 {
     // Rewrites the string values inside a JSON document (the inventories are stored as JSON inside string fields)
     // without re-serialising it: only the literals that change are replaced, every other byte stays as written.
+    // Pure file (see code_standard.md): no game or Unity types. Used by TextPolicy for the inventories, which the game stores
+    // as JSON inside string fields, and tested in tests/PureTest.cs. It has its own small parser because it must know where
+    // every string literal starts and ends in the source text, to change only those and keep every other byte.
     static class JsonText
     {
         // Called for each string value: (memberName, value, contextTokensOfEnclosingObject) -> replacement or null.
         public delegate string Rewriter(string member, string value, HashSet<string> context);
 
+        // Parsed nodes. Str keeps where the literal starts and ends in the source; Lit stands for numbers, true, false and null,
+        // which are never edited.
         sealed class Str { public int Start, End; public string Value; }
         sealed class Obj { public List<KeyValuePair<string, object>> Members = new List<KeyValuePair<string, object>>(); }
         sealed class Arr { public List<object> Items = new List<object>(); }
         sealed class Lit { }
 
+        // A replacement of source[Start..End) by Text.
         sealed class Edit { public int Start, End; public string Text; }
 
         public static bool LooksLikeJson(string s)
@@ -57,6 +63,8 @@ namespace SaveLanguageConverter
             return sb.ToString();
         }
 
+        // Visits every string value. The ids found among an object's own string members become the context of all its members,
+        // the same idea as SaveWalker.Walk. Edits are only recorded here; Rewrite applies them.
         static void Walk(object node, string member, HashSet<string> context, Rewriter rewriter, Func<string, HashSet<string>> contextOf, List<Edit> edits)
         {
             var o = node as Obj;
@@ -84,6 +92,8 @@ namespace SaveLanguageConverter
                 edits.Add(new Edit { Start = s.Start, End = s.End, Text = Quote(replacement) });
         }
 
+        // Writes a string as a JSON literal (quotes, backslashes and control characters escaped); other characters, such as
+        // Chinese text, are written as they are.
         public static string Quote(string s)
         {
             var sb = new StringBuilder(s.Length + 2);
@@ -113,6 +123,8 @@ namespace SaveLanguageConverter
             while (i < s.Length && char.IsWhiteSpace(s[i])) i++;
         }
 
+        // Recursive-descent parse. Throws FormatException on anything that is not JSON, so Rewrite can refuse the whole text
+        // rather than rewrite part of it.
         static object ParseValue(string s, ref int i)
         {
             SkipWs(s, ref i);

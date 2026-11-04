@@ -10,9 +10,12 @@ namespace SaveLanguageConverter
     // itself writes localized text: non-ASCII text anywhere outside id fields (ids are ASCII), ASCII text only
     // in the fields listed below. Fields such as "subtitle" hold English table text even in a Chinese save,
     // so they are internal names and stay as they are.
+    // Pure file (see code_standard.md): no game or Unity types, checked headless against real tables and a real save by
+    // tests/EngineTest.cs. SaveWalker.cs asks it about every string; Translator.Pure.cs does the lookup it hands over to.
     sealed class TextPolicy
     {
         readonly Translator translator;
+        // Counters for the log line written after a conversion.
         public int Changed;
         public readonly Dictionary<string, int> Untranslated = new Dictionary<string, int>(StringComparer.Ordinal);
 
@@ -35,6 +38,7 @@ namespace SaveLanguageConverter
             "displayName", "internalValueString",
         };
 
+        // Substrings of field names that never hold display text (ids, paths, the names the player typed, and so on).
         static readonly string[] Never = { "guid", "uuid", "hash", "version", "path", "file", "locale", "scenario",
             "difficulty", "storename", "playername", "customname", "seed", "sprite", "sound", "prefab", "icon" };
 
@@ -42,6 +46,7 @@ namespace SaveLanguageConverter
         // each answer is worked out once.
         static readonly Dictionary<string, bool> skipByMember = new Dictionary<string, bool>(StringComparer.Ordinal);
 
+        // True for fields whose name says id, key or one of Never. Unnamed values (member == null) are not skipped.
         static bool SkipMember(string member)
         {
             if (member == null) return false;
@@ -55,6 +60,7 @@ namespace SaveLanguageConverter
             return skip;
         }
 
+        // True for an internal identifier: ASCII only, no spaces, and all lower case, all upper case or containing an underscore.
         public static bool IsIdLike(string s)
         {
             if (s.Length == 0) return false;
@@ -68,6 +74,8 @@ namespace SaveLanguageConverter
             return s.IndexOf('_') >= 0 || lower || upper;
         }
 
+        // Word tokens of an id-like value, such as item_water_pure -> item, water, pure. Collected from the strings of an object
+        // and used by Translator.Choose to prefer the entry whose key shares words with them.
         public static HashSet<string> ContextOf(string value)
         {
             var set = new HashSet<string>();

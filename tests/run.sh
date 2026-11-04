@@ -12,6 +12,7 @@ WORK="${TEMP:-/tmp}/slc_tests"
 rm -rf "${WORK:?}" && mkdir -p "$WORK"
 cp tests/PureTest.cs tests/ScanTest.cs src/*.Pure.cs "$WORK/"
 
+# The engine files are compiled together with PureTest.cs, so any game or Unity type in a *.Pure.cs file fails here.
 pure=()
 for f in src/*.Pure.cs; do pure+=("$(basename "$f")"); done
 ( cd "$WORK" && "$CSC" -nologo -out:PureTest.exe PureTest.cs "${pure[@]}" >/dev/null && ./PureTest.exe | grep -v '^ok' )

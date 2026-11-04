@@ -1,3 +1,5 @@
+// Pure file (see code_standard.md): no game or Unity types, so tests/PureTest.cs can run it on hand-made entries.
+// ConvertMod fills the Translator from the game's string tables (BuildTranslator); TextPolicy decides when to call it.
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,7 @@ namespace SaveLanguageConverter
     // One source-language string as it appears in a game string table, and what it is in the target language.
     sealed class Candidate
     {
+        // Table and Key identify the entry; Priority is the table's position in ConvertMod.Tables (lower wins).
         public string Table;
         public string Key;
         public string Target;
@@ -17,6 +20,7 @@ namespace SaveLanguageConverter
 
     sealed class Template
     {
+        // A source entry with {placeholders}, as a regex: the literal parts are escaped and each placeholder becomes (.+?).
         public Regex Pattern;
         public string[] Placeholders;   // "{0}", "{name}", ... in capture-group order
         public string Literal;          // longest literal run, used as a cheap pre-filter
@@ -27,13 +31,17 @@ namespace SaveLanguageConverter
     // returns the same entries in another language. Holds no Unity types so it can be tested offline.
     sealed class Translator
     {
+        // Limits of the segmentation in TranslateSegments. They bound its cost: a piece is at most 80 characters, a
+        // text at most 160, and a result at most 6 entries.
         const int MaxSegmentLength = 80;
         const int MaxSegmentedLength = 160;
         const int MaxSegments = 6;
 
         readonly Dictionary<string, List<Candidate>> exact = new Dictionary<string, List<Candidate>>(StringComparer.Ordinal);
         readonly List<Template> templates = new List<Template>();
+        // Results for texts looked up without context; a save repeats the same texts very often.
         readonly Dictionary<string, string> memo = new Dictionary<string, string>(StringComparer.Ordinal);
+        // CJK text has no spaces between words, so word-boundary and length rules differ (see TranslateSegments and IsCjk).
         readonly bool sourceIsCjk;
         int longestValue;
 
@@ -46,6 +54,8 @@ namespace SaveLanguageConverter
         public int EntryCount { get { return exact.Count; } }
         public int TemplateCount { get { return templates.Count; } }
 
+        // Registers one entry. Entries identical in both languages carry no information and are dropped. Entries with {..}
+        // placeholders are also kept as templates.
         public void Add(string table, int priority, string key, string source, string target)
         {
             if (string.IsNullOrEmpty(source) || string.IsNullOrEmpty(target) || source == target) return;
@@ -59,6 +69,8 @@ namespace SaveLanguageConverter
 
         static readonly Regex PlaceholderRx = new Regex(@"\{[^{}]*\}");
 
+        // Templates that would match too much are refused: repeated or nested placeholders, no letters in the fixed text
+        // ("{0}: {1}" would match anything), or a target text that lacks one of the placeholders.
         void AddTemplate(string source, Candidate c)
         {
             var parts = PlaceholderRx.Split(source);
@@ -94,12 +106,14 @@ namespace SaveLanguageConverter
             return false;
         }
 
+        // Kana, CJK ideographs (including extension A) and Hangul syllables.
         static bool IsCjk(char ch)
         {
             return (ch >= '぀' && ch <= 'ヿ') || (ch >= '㐀' && ch <= '鿿') || (ch >= '가' && ch <= '힯');
         }
 
         // Letters that belong to a word in scripts that separate words with spaces.
+        // Letters and digits of scripts that separate words with spaces; CJK characters are not word characters.
         static bool IsWordChar(char ch)
         {
             return char.IsLetterOrDigit(ch) && ch < '⺀';
@@ -128,6 +142,8 @@ namespace SaveLanguageConverter
             return r;
         }
 
+        // Tries the strategies from the most to the least specific; the first one that produces a result wins. `depth` bounds the
+        // recursion, since templates, suffixes and sentences call back into Translate.
         string Translate(string s, ICollection<string> context, int depth)
         {
             if (s.Length == 0) return s;
@@ -184,6 +200,8 @@ namespace SaveLanguageConverter
             return string.Join("\n", output.ToArray());
         }
 
+        // The placeholder values are translated too when they contain letters (an item name inside a sentence); a value that
+        // is not an entry, such as a number or a typed name, is copied through.
         string TranslateTemplate(string s, ICollection<string> context, int depth)
         {
             foreach (var t in templates)
@@ -209,6 +227,7 @@ namespace SaveLanguageConverter
             return null;
         }
 
+        // True when the text has at least one letter. Placeholder values without letters (numbers) are copied without a lookup.
         static bool HasLetters(string s)
         {
             foreach (char ch in s) if (char.IsLetter(ch)) return true;
@@ -277,8 +296,11 @@ namespace SaveLanguageConverter
             return LooksUntranslated(r) ? null : r;
         }
 
+        // Splits after sentence-ending punctuation, keeping the separators (the odd-numbered pieces).
         static readonly Regex SentenceRx = new Regex(@"(?<=[。！？!?])(\s*)");
 
+        // Text made of several sentences, each an entry of its own. Gives up when any sentence is unknown, so a half-translated
+        // text is never produced.
         string TranslateSentences(string s, ICollection<string> context, int depth)
         {
             string[] pieces = SentenceRx.Split(s);
@@ -296,6 +318,7 @@ namespace SaveLanguageConverter
             return sb.ToString();
         }
 
+        // Separators of the words in an entry key such as plant_trait_unappetizing_name.
         static readonly char[] KeySeparators = { '_', '-', '.', ' ' };
 
         // Several entries can share one source string ("难以下咽" is both an undrinkable wine and an unappetizing plant).
@@ -318,11 +341,13 @@ namespace SaveLanguageConverter
                 .First().Key;
         }
 
+        // All-caps text; a title-case or lower-case entry is preferred when other things are equal.
         static bool IsShouting(string s)
         {
             return s.Any(char.IsLetter) && s.ToUpperInvariant() == s && s.ToLowerInvariant() != s;
         }
 
+        // How many words (longer than two letters) of the key also appear in the ids next to the text.
         static int Overlap(string key, ICollection<string> context)
         {
             if (context == null || context.Count == 0) return 0;
@@ -332,6 +357,7 @@ namespace SaveLanguageConverter
             return n;
         }
 
+        // Splits an id such as name_odin into words and adds them to `into`; the same rule as Overlap uses on keys.
         public static void AddContextTokens(string idLike, HashSet<string> into)
         {
             foreach (var tok in idLike.ToLowerInvariant().Split(KeySeparators, StringSplitOptions.RemoveEmptyEntries))

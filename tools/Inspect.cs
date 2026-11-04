@@ -6,6 +6,10 @@ using System.Text.RegularExpressions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
+// Prints the types of a DLL whose full name matches a regex: fields, properties, events and method signatures, and the IL of
+// the methods whose name matches the optional second regex. Used to read the game's Assembly-CSharp.dll when writing a patch.
+// Output goes to a file because it can be very large. The game's Managed folder is added to the resolver (edit the path if
+// the game is installed elsewhere). See modding_tools.md in the collection repository for how to compile it.
 class Inspect
 {
     static void Main(string[] a)

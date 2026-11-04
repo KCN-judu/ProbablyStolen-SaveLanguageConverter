@@ -10,6 +10,7 @@ using SaveLanguageConverter;
 
 static class EngineTest
 {
+    // Undoes the escaping of the .tsv files written by tests/fixtures.py (esc).
     static string Unesc(string s)
     {
         var sb = new StringBuilder();
@@ -28,6 +29,8 @@ static class EngineTest
         return Regex.Replace(s, "([{,])(-?\\d+):", "$1\"$2\":");
     }
 
+    // Every string of a document, with the name of its field, in order; strings that hold JSON are opened. Comparing two
+    // saves leaf by leaf shows where they differ.
     static List<string> Leaves(string json)
     {
         var all = new List<string>();
@@ -42,6 +45,9 @@ static class EngineTest
         return all;
     }
 
+    // Part A compares single texts with the hand-checked reference. Part B converts a whole save with TextPolicy, as the mod does
+    // in the game, and compares it with the reference save. SLC_SRC sets the source language (default zh). Differences are written
+    // to the report file, not treated as failures: the report is read by a person.
     static int Main(string[] a)
     {
         var tr = new Translator(Environment.GetEnvironmentVariable("SLC_SRC") ?? "zh");
@@ -98,6 +104,7 @@ static class EngineTest
         return 0;
     }
 
+    // Shortens a text for the report.
     static string Show(string s)
     {
         s = s.Replace("\r", "\\r").Replace("\n", "\\n");

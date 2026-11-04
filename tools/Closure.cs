@@ -6,6 +6,10 @@ using System.IO;
 using System.Linq;
 using Mono.Cecil;
 
+// Usage: Closure.exe <Assembly-CSharp.dll> <out.cs> (the output is src/KnownTypes.g.cs).
+// Starting from PlayerStore and StoreStation, follows every field type of the game's own save classes and keeps the types
+// that reach a string. The store objects listed in skipNames, Unity objects and delegates are not followed; saved inventories
+// are JSON text, which JsonText rewrites. Polymorphic fields are covered by also taking the subclasses of each type.
 class Closure
 {
     static ModuleDefinition mod;
@@ -32,6 +36,7 @@ class Closure
         yield return tr;
     }
 
+    // True for a plain game class worth walking: from this assembly, not generic, enum, interface, Unity object or delegate.
     static bool Mine(TypeReference tr, out TypeDefinition td)
     {
         td = null;
@@ -103,6 +108,8 @@ class Closure
         }
     }
 
+    // The C# expression for a type, or null when it cannot be written as typeof(...) (non-public types). The mod's scanner rejects
+    // computed types, so KnownTypes.g.cs must only contain typeof literals.
     static string Expr(TypeDefinition t)
     {
         if (!t.IsNested) return t.IsPublic ? "typeof(global::" + t.FullName.Replace('/', '.') + ")" : null;
