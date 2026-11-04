@@ -1,9 +1,9 @@
 # Save Language Converter - 简体中文 (zh)
 button_convert,转换副本
-dialog_hint,转换副本：复制此存档，并把其中文字换成{0}。原存档保持不变。
+dialog_hint,转换副本：复制这个存档，并把里面的文字换成{0}。原存档不变。
 copy_name,{0}（{1}）
 copy_failed,无法复制存档，未做任何修改。
-restart_needed,副本“{0}”已创建。游戏是以其他语言启动的，部分文字（例如顾客想要的水质）要重启后才会更新。请重启游戏后再读取这个副本，读取时会转换成{1}。
+restart_needed,副本“{0}”已创建。游戏启动时用的是另一种语言，部分文字（例如顾客想要的水质）要到重启后才会更新。请重启游戏，再读取这个副本，读取时会转换成{1}。
 lang_en,English
 lang_zh,简体中文
 lang_ja,日本語
